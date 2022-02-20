@@ -1,46 +1,16 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import Test from "./components/Test";
 
 function App() {
   const [count, setCount] = useState(0);
   let bob = "Hello";
   console.log(import.meta.env);
   let vars = Object.entries(import.meta.env).map(val=><p>{val[0]}: {val[1]}</p>)
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates. {vars}
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <Test/>
     </div>
   )
 }
