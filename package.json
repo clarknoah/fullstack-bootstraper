@@ -1,0 +1,9 @@
+{
+  "name": "fullstack-bootstraper",
+  "version": "1.0.0",
+  "description": "React, GraphQL, TypeScript Bootstraper",
+  "main": "index.js",
+  "repository": "git@github.com:clarknoah/fullstack-bootstraper.git",
+  "author": "Noah Clark <noahbc08@gmail.com>",
+  "license": "MIT"
+}
