@@ -12,7 +12,7 @@ function App() {
   let bob = "Hello";
   console.log(import.meta.env);
   let vars = Object.entries(import.meta.env).map(val=><p>{val[0]}: {val[1]}</p>)
-
+  console.log(Routes);
   const rootRoutes = useRoutes(Routes);
   return (
     <div className="App">

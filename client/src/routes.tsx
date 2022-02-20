@@ -12,7 +12,6 @@ const routes:RouteObject[] = [
                 {path: "/home/friend", element:  <Test input={"Friend"} />},
                 {path: "/home/mike", element:  <Test input={"mike"} />}
             ]
-        
         },
         ]
     },
