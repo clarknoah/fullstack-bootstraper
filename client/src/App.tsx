@@ -2,9 +2,10 @@ import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import Test from "./components/Test";
-import type { RouteObject } from "react-router-dom";
-import { Outlet, Link, useRoutes, useParams } from "react-router-dom";
-import Routes from "routes";
+import { Outlet, Link, useRoutes, useParams, RouteObject } from "react-router-dom";
+import Routes, { routeList } from "routes";
+
+
 
 
 function App() {
@@ -16,6 +17,10 @@ function App() {
   const rootRoutes = useRoutes(Routes);
   return (
     <div className="App">
+      <ul>
+
+      {routeList}
+      </ul>
       {rootRoutes}
     </div>
   )
