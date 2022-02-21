@@ -1,19 +1,24 @@
 import type { RouteObject } from "react-router-dom";
 import Test from "components/Test";
+import Login from "components/Login";
+import Logout from "components/Logout";
+import Home from "pages/Home";
 
 const routes:RouteObject[] = [
     {
         path: "/",
-        element: <Test input={"Base Path: /"} />,
+        element: <Home/>,
         children:[
             // { index: true, element: <Test input={"Nested Home"} /> },
             {path: "/home", 
-            element:  <Test input={" Home"} />,
-            children:[
-                {path: "/home/friend", element:  <Test input={"Friend"} />},
-                {path: "/home/mike", element:  <Test input={"mike"} />}
-            ]
-        },
+              element:  <Test input={" Home"} />,
+              children:[
+                  {path: "/home/friend", element:  <Test input={"Friend"} />},
+                  {path: "/home/mike", element:  <Test input={"mike"} />}
+              ]
+            },
+            {path: "/login", element: <Login/>},
+            {path: "/logout", element: <Logout/>}
         ]
     },
     {
