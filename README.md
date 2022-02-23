@@ -3,7 +3,7 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 
 
 ## Include Software Tools
-* <img width="30" src="https://neo4j.com/wp-content/themes/neo4jweb/v2-templates/brand/assets/neo4j-icon-color.png"/> Neo4j
+* Neo4j <img width="30" src="https://neo4j.com/wp-content/themes/neo4jweb/v2-templates/brand/assets/neo4j-icon-color.png"/>
 * Express
 * React
 * Vite
