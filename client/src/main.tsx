@@ -5,7 +5,6 @@ import App from './App'
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "context/authContext";
 import { TestProvider } from "context/TestContext";
-
 ReactDOM.render(
   <React.StrictMode>
     <TestProvider>

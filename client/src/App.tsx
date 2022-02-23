@@ -7,12 +7,20 @@ import Routes, { routeList } from "routes";
 import { useAuth } from "context/authContext";
 import styled from "styled-components";
 import React from "react";
-
+import Toast, { toast } from "components/Toast";
 const AppContainer = styled.div`
   display: flex;
+  height: 100vh;
+  width: 100vw;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
 `;
+
+toast.raw.configure({
+  autoClose: 1000,
+  draggable: true,
+});
 
 
 const App: React.FC<{}> = () =>{
@@ -21,18 +29,37 @@ const App: React.FC<{}> = () =>{
   const rootRoutes = useRoutes(Routes);
   console.log("Page Reloaded");
 
+  const successToast = () =>{
+    toast.raw.success("Success Notification !", {
+      position: toast.raw.POSITION.TOP_CENTER,
+      autoClose: 1500
+    });
+  }
+  const errorToast = () =>{
+    toast.raw.error("Success Notification !", {
+      position: toast.raw.POSITION.TOP_CENTER,
+      autoClose: 3500
+    });
+  }
+
   return (
     <AppContainer>
         <div>App Component: {auth.user}</div>
+        <button onClick={successToast}>Trigger Success</button>
+        <button onClick={()=>toast.error("What the hell")}>Trigger Error</button>
+        <button onClick={successToast}>Trigger Success</button>
+        <button onClick={successToast}>Trigger Success</button>
+
         <ul>
         {routeList.map(value=>(
-        <li>
+          <li>
           <Link to={value}>{value}</Link>
         </li>)
         )}
         </ul>
         {rootRoutes}
         {auth.user && <p>Hi</p>}
+        <Toast/>
     </AppContainer>
   )
 }
