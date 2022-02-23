@@ -3,6 +3,7 @@ import Test from "components/Test";
 import Login from "components/Login";
 import Logout from "components/Logout";
 import Home from "pages/Home";
+import EditTest from "components/EditTest";
 
 const routes:RouteObject[] = [
     {
@@ -18,7 +19,8 @@ const routes:RouteObject[] = [
               ]
             },
             {path: "/login", element: <Login/>},
-            {path: "/logout", element: <Logout/>}
+            {path: "/logout", element: <Logout/>},
+            {path: "/edit", element: <EditTest/>}
         ]
     },
     {

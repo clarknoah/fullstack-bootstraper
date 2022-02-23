@@ -49,9 +49,5 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({
 
   let value = { authorized:user.authorized, user:user.user, signin, signout };
 
-  console.log("This is getting recreated");
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
-// export function AuthProvider({ children }: { children: React.ReactNode }) {
-
-// }
