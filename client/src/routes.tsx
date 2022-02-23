@@ -1,4 +1,4 @@
-import type { RouteObject } from "react-router-dom";
+import type { RouteObject, Link } from "react-router-dom";
 import Test from "components/Test";
 import Login from "components/Login";
 import Logout from "components/Logout";
@@ -33,12 +33,12 @@ const routes:RouteObject[] = [
 
 
 const getRouteList = (routes:RouteObject[])=>{
-    let list:React.ReactNode[] = [];
+    let list:string[] = [];
     //Iterate through routes and create list link 
     //If route has children, call routeList on children
     routes.forEach(value=>{
       if(value.path){
-        list.push(<li><a href={value.path}>{value.path}</a></li>)
+        list.push(value.path)
       }
       if(value.children && value.children.length > 0){
         list.push(...getRouteList(value.children))
@@ -47,7 +47,7 @@ const getRouteList = (routes:RouteObject[])=>{
     return list;
   } 
 
- export const routeList = getRouteList(routes);
+ export const routeList:string[] = getRouteList(routes);
 
 
 export default routes;
