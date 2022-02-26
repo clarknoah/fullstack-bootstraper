@@ -7,7 +7,11 @@ import Routes, { routeList } from "routes";
 import { useAuth } from "context/authContext";
 import styled from "styled-components";
 import React from "react";
-import Toast, { toast } from "components/Toast";
+import Toast, { toast } from "contextComponents/Toast";
+import Header from "contextComponents/Header";
+import Footer from "contextComponents/Footer";
+import { useNav } from "context/navContext";
+
 const AppContainer = styled.div`
   display: flex;
   height: 100vh;
@@ -27,6 +31,7 @@ const App: React.FC<{}> = () =>{
   const auth = useAuth();
   let bob = "Hello";
   const rootRoutes = useRoutes(Routes);
+  const nav = useNav();
   console.log("Page Reloaded");
 
   const successToast = () =>{
@@ -44,11 +49,12 @@ const App: React.FC<{}> = () =>{
 
   return (
     <AppContainer>
+        <Header/>
         <div>App Component: {auth.user}</div>
         <button onClick={successToast}>Trigger Success</button>
         <button onClick={()=>toast.error("What the hell")}>Trigger Error</button>
-        <button onClick={successToast}>Trigger Success</button>
-        <button onClick={successToast}>Trigger Success</button>
+        <button onClick={()=>nav.toggleHeaderVisibility()}>Toggle Header</button>
+        <button onClick={()=>nav.toggleFooterVisibility()}>Toggle Footer</button>
 
         <ul>
         {routeList.map(value=>(
@@ -60,6 +66,7 @@ const App: React.FC<{}> = () =>{
         {rootRoutes}
         {auth.user && <p>Hi</p>}
         <Toast/>
+        <Footer/>
     </AppContainer>
   )
 }

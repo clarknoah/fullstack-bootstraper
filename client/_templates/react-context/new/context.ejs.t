@@ -1,5 +1,5 @@
 ---
-to: src/context/<%= name %>Context.tsx
+to: src/context/<%= name.toLowerCase() %>Context.tsx
 ---
 import React, { createContext, useContext } from "react";
 

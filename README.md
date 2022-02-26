@@ -26,6 +26,7 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 * Emailing Support
 * Robust Logging
 * Standardized API Responses
+* SSO Integration
 
 ### Client-Side Functionality
 * Hygen Templates
@@ -33,7 +34,9 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 * Subscription Service Payment Templates
 * Terms of Service Templates
 * Privacy Policy Templates
-* 
+* Toast Integration
+* Sub Domain Functionality
+
 
 
 ### Common Functionality
