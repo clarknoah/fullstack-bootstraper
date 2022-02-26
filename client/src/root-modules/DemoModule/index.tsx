@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "context/authContext";
 import { TestProvider } from "context/TestContext";
 import { NavProvider } from "context/navContext";
+import GlobalStyles from "context-components/globalStyles";
+import { ThemeProvider } from "context/themeContext";
 import App from "App";
 interface DemoModuleProps {
   children?: React.ReactNode;
@@ -15,15 +17,18 @@ const DemoModule: React.FC<DemoModuleProps> = (
 ) => {
   return (
     <React.StrictMode>
-      <NavProvider>
         <TestProvider>
           <AuthProvider>
             <BrowserRouter>
-                <App/>
+              <ThemeProvider>
+                <GlobalStyles/>
+                <NavProvider>
+                  <App/>
+                </NavProvider>
+              </ThemeProvider>
             </BrowserRouter>
           </AuthProvider>
         </TestProvider>
-      </NavProvider>
   </React.StrictMode>
   )
 };

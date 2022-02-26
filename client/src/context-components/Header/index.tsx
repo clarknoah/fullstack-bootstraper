@@ -20,7 +20,7 @@ const Header: React.FC< HeaderProps > = ({
 }) => {
   const { showHeader } = useNav();
   const display = {
-    "display": showHeader ? "flex" : "none"
+    "display": showHeader ? "flex" : "hidden"
   }
   return (
     <HeaderContainer style={display}>

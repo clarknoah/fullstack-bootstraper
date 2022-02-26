@@ -11,6 +11,7 @@ import Toast, { toast } from "context-components/Toast";
 import Header from "context-components/Header";
 import Footer from "context-components/Footer";
 import { useNav } from "context/navContext";
+import { useTheme } from "context/themeContext";
 
 const AppContainer = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const App: React.FC<{}> = () =>{
   let bob = "Hello";
   const rootRoutes = useRoutes(Routes);
   const nav = useNav();
-  console.log("Page Reloaded");
+  const theme = useTheme();
 
   const successToast = () =>{
     toast.raw.success("Success Notification !", {
@@ -55,6 +56,7 @@ const App: React.FC<{}> = () =>{
         <button onClick={()=>toast.error("What the hell")}>Trigger Error</button>
         <button onClick={()=>nav.toggleHeaderVisibility()}>Toggle Header</button>
         <button onClick={()=>nav.toggleFooterVisibility()}>Toggle Footer</button>
+        <button onClick={()=>theme.toggleTheme()}>Toggle Theme</button>
 
         <ul>
         {routeList.map(value=>(

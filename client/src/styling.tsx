@@ -1,3 +1,4 @@
+
 export enum Color {
     green = "green",
     indigo = "indigo",
@@ -99,3 +100,17 @@ export enum Color {
     lg: "(min-width: 1200px)",
   };
   
+  export const lightTheme = {
+    body: '#FFF',
+    text: '#363537',
+    toggleBorder: '#FFF',
+    background: '#363537',
+    linkText: '-webkit-link',
+    linkVisitedText: "light-green"
+}
+export const darkTheme = {
+    body: '#363537',
+    text: '#FAFAFA',
+    toggleBorder: '#6B8096',
+    background: '#999'
+}
