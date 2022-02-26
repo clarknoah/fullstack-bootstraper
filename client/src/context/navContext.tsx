@@ -23,9 +23,9 @@ export type NavProviderProps = {
 export const NavProvider: React.FC<NavProviderProps> = ({
   children
 })=>{
-  let [showFooter, setFooter] = React.useState<boolean>(true);
-  let [showHeader, setHeader] = React.useState<boolean>(true);
-
+  let [showFooter, setFooter] = React.useState<boolean>(Boolean(import.meta.env.VITE_SHOW_FOOTER));
+  let [showHeader, setHeader] = React.useState<boolean>(Boolean(import.meta.env.VITE_SHOW_HEADER));
+  console.log(showFooter,showHeader);
   let toggleFooterVisibility = (value: boolean = !showFooter) => {
       setFooter(value);
       return undefined;

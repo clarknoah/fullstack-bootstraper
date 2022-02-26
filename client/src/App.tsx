@@ -7,9 +7,9 @@ import Routes, { routeList } from "routes";
 import { useAuth } from "context/authContext";
 import styled from "styled-components";
 import React from "react";
-import Toast, { toast } from "contextComponents/Toast";
-import Header from "contextComponents/Header";
-import Footer from "contextComponents/Footer";
+import Toast, { toast } from "context-components/Toast";
+import Header from "context-components/Header";
+import Footer from "context-components/Footer";
 import { useNav } from "context/navContext";
 
 const AppContainer = styled.div`

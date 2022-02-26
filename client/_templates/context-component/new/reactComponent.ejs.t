@@ -1,5 +1,5 @@
 ---
-to: src/contextComponents/<%= name %>/index.tsx
+to: src/context-components/<%= name %>/index.tsx
 ---
 
 import React from "react";
