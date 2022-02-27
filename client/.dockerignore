@@ -1,0 +1,9 @@
+node_modules
+build
+.dockerignore
+Dockerfile
+Dockerfile.prod
+dist
+logs
+proxy
+node_modules

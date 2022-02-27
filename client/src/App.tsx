@@ -12,6 +12,7 @@ import Header from "context-components/Header";
 import Footer from "context-components/Footer";
 import { useNav } from "context/navContext";
 import { useTheme } from "context/themeContext";
+import { useModal } from "context/modalContext";
 
 const AppContainer = styled.div`
   display: flex;
@@ -21,6 +22,12 @@ const AppContainer = styled.div`
   align-items: flex-start;
   justify-content: space-between;
 `;
+
+const ModalContent = styled.div`
+  height: 50%;
+  width: 50%;
+  background: white;
+`
 
 toast.raw.configure({
   autoClose: 1000,
@@ -34,6 +41,7 @@ const App: React.FC<{}> = () =>{
   const rootRoutes = useRoutes(Routes);
   const nav = useNav();
   const theme = useTheme();
+  const modal = useModal();
 
   const successToast = () =>{
     toast.raw.success("Success Notification !", {
@@ -48,6 +56,18 @@ const App: React.FC<{}> = () =>{
     });
   }
 
+  const showModal = () =>{
+    const content = (
+      <ModalContent>
+        <h1> Proof you can close</h1>
+        <button onClick={()=>modal.toggleModalVisibility(false)}>Close Modal</button>
+      </ModalContent>
+    );
+    modal.setContent(content);
+    modal.toggleModalVisibility();
+
+  }
+
   return (
     <AppContainer>
         <Header/>
@@ -57,6 +77,7 @@ const App: React.FC<{}> = () =>{
         <button onClick={()=>nav.toggleHeaderVisibility()}>Toggle Header</button>
         <button onClick={()=>nav.toggleFooterVisibility()}>Toggle Footer</button>
         <button onClick={()=>theme.toggleTheme()}>Toggle Theme</button>
+        <button onClick={showModal}>Toggle Modal</button>
 
         <ul>
         {routeList.map(value=>(
