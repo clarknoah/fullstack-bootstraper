@@ -35,13 +35,38 @@ toast.raw.configure({
 });
 
 
+const DemoModal: React.FC<{
+  onClose: Function
+  callback?: Function
+}> = ( props ) =>{
+  const [ text, setText ] = useState("");
+  
+return <ModalContent>
+  <input value={text} onChange={e=>setText(e.target.value)}/>
+  <button onClick={()=>props.onClose(text)}>Submit</button>
+  <button onClick={()=>{
+    if(props.callback){
+      props.callback(text)
+    }
+    }}>callthingsback</button>
+
+</ModalContent>
+}
+
+
 const App: React.FC<{}> = () =>{
+  const [data, setData ] = useState("Not Set");
   const auth = useAuth();
-  let bob = "Hello";
   const rootRoutes = useRoutes(Routes);
   const nav = useNav();
   const theme = useTheme();
   const modal = useModal();
+
+  const setText = (text: string) =>{
+    console.log("getting called", text);
+    setData(text);
+    modal.close();
+  }
 
   const successToast = () =>{
     toast.raw.success("Success Notification !", {
@@ -57,14 +82,12 @@ const App: React.FC<{}> = () =>{
   }
 
   const showModal = () =>{
-    const content = (
-      <ModalContent>
-        <h1> Proof you can close</h1>
-        <button onClick={()=>modal.toggleModalVisibility(false)}>Close Modal</button>
-      </ModalContent>
-    );
-    modal.setContent(content);
-    modal.toggleModalVisibility();
+    modal.setContent(<DemoModal onClose={setText} callback={(d:any)=>{
+      console.log(d);
+      setData(d);
+      console.log("data:", data);
+    }}/>);
+    modal.open(()=>console.log("Modal has opened"));
 
   }
 
@@ -78,7 +101,7 @@ const App: React.FC<{}> = () =>{
         <button onClick={()=>nav.toggleFooterVisibility()}>Toggle Footer</button>
         <button onClick={()=>theme.toggleTheme()}>Toggle Theme</button>
         <button onClick={showModal}>Toggle Modal</button>
-
+        <h4>{data}</h4>
         <ul>
         {routeList.map(value=>(
           <li>

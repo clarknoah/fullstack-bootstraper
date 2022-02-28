@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = (props) => {
   const { children } = props;
   const modal = useModal();
 
-  console.log(modal);
+  console.log("Modal getting Rendered");
 
   if(modal.showModal){
 

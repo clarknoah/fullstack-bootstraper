@@ -3,7 +3,9 @@ import React, { createContext, useContext } from "react";
 
 export type ModalType = {
   showModal: boolean;
-  toggleModalVisibility: (value?: boolean) => undefined;
+  toggleModalVisibility: (value?: boolean) => void;
+  open: (callback?: Function) => void;
+  close: (callback?: Function) => void;
   content: React.ReactNode;
   setContent: (content: React.ReactNode) => void;
 };
@@ -28,11 +30,23 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
 
   let toggleModalVisibility = (value: boolean = !showModal) => {
     setModalVisibility(value);
-    return undefined;
   };
 
+  const open = (callback:Function | null = null) =>{
+    if(callback!==null){
+      callback();
+    }
+    setModalVisibility(true);
+  }
+  const close = (callback:Function | null = null) =>{
+    if(callback!==null){
+      callback();
+    }
+    setModalVisibility(false);
+  }
 
-  let value = {showModal, toggleModalVisibility, content, setContent};
+
+  let value = {showModal, toggleModalVisibility, content, setContent, open, close};
 
   return <ModalContext.Provider value={value}>{children}</ModalContext.Provider>;
 }
