@@ -1,10 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useModal } from "context/modalContext";
 
 const ModalContainer = styled.div`
   display: flex;
-  position: fixed;
+  position: absolute;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -22,43 +21,45 @@ const ModalBox = styled.div`
   align-items: center;
   height: 50vh;
   width: 50vw;
-  opacity: 1;
   z-index: 3;
+  background-color: white;
 `
 
 
 interface ModalProps {
-  children: React.ReactNode;
+  show: boolean;
+  children?: React.ReactNode;
+  onClose?: (value: any) => any;
+  type?: string;
 }
 
 
+
+
 const Modal: React.FC<ModalProps> = (props) => {
-  const { children } = props;
-  const modal = useModal();
+  const { children, type, onClose, show} = props;
+
+  const setModalType = () =>{
+    if(children){
+      return children;
+    }else{
+      return <div>Crap</div>
+    }
+  }
 
   console.log("Modal getting Rendered");
 
-  if(modal.showModal){
-
+    if(show){
     return (
-    <div>
       <ModalContainer>
         <ModalBox>
-          {modal.content ? modal.content : (
-            <h1>This is a modal</h1>
-          )}
-          <button onClick={()=>modal.toggleModalVisibility(false)}>Close Modal</button>
+          {setModalType()}
         </ModalBox>
       </ModalContainer>
-      {children}
-    </div>
     );
-
   }else{
-
-    return <>{children}</>
-    
-  } 
+    return null;
+  }
 };
 
 export default Modal;

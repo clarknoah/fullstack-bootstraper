@@ -12,7 +12,8 @@ import Header from "context-components/Header";
 import Footer from "context-components/Footer";
 import { useNav } from "context/navContext";
 import { useTheme } from "context/themeContext";
-import { useModal } from "context/modalContext";
+import { useLoading } from "context/loadingContext";
+import Modal from "context-components/Modal";
 
 const AppContainer = styled.div`
   display: flex;
@@ -56,17 +57,12 @@ return <ModalContent>
 
 const App: React.FC<{}> = () =>{
   const [data, setData ] = useState("Not Set");
+  const [modal, setModal ] = useState(false);
   const auth = useAuth();
   const rootRoutes = useRoutes(Routes);
   const nav = useNav();
   const theme = useTheme();
-  const modal = useModal();
-
-  const setText = (text: string) =>{
-    console.log("getting called", text);
-    setData(text);
-    modal.close();
-  }
+  const { setLoading, setType } = useLoading();
 
   const successToast = () =>{
     toast.raw.success("Success Notification !", {
@@ -81,15 +77,22 @@ const App: React.FC<{}> = () =>{
     });
   }
 
-  const showModal = () =>{
-    modal.setContent(<DemoModal onClose={setText} callback={(d:any)=>{
-      console.log(d);
-      setData(d);
-      console.log("data:", data);
-    }}/>);
-    modal.open(()=>console.log("Modal has opened"));
+  const setLoadingFunc = () =>{
+    
+    setLoading(true);
+    setTimeout(()=>{
+      setLoading(false);
+      setTimeout(()=>{
+        setType("BarLoader")
+        setLoading(true);
+        setTimeout(()=>{
+          setLoading(false);
+        }, 2000)
+      },1000)
+    }, 3000)
 
   }
+
 
   return (
     <AppContainer>
@@ -100,7 +103,9 @@ const App: React.FC<{}> = () =>{
         <button onClick={()=>nav.toggleHeaderVisibility()}>Toggle Header</button>
         <button onClick={()=>nav.toggleFooterVisibility()}>Toggle Footer</button>
         <button onClick={()=>theme.toggleTheme()}>Toggle Theme</button>
-        <button onClick={showModal}>Toggle Modal</button>
+        <button onClick={()=>setModal(true)}>Toggle Modale</button>
+        <button onClick={setLoadingFunc}>Toggle Modale</button>
+
         <h4>{data}</h4>
         <ul>
         {routeList.map(value=>(
@@ -111,6 +116,9 @@ const App: React.FC<{}> = () =>{
         </ul>
         {rootRoutes}
         {auth.user && <p>Hi</p>}
+        <Modal show={modal}>
+          <button onClick={()=>setModal(false)}>Close Modal</button>
+        </Modal>
         <Toast/>
         <Footer/>
     </AppContainer>

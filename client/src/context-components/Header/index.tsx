@@ -19,8 +19,9 @@ const Header: React.FC< HeaderProps > = ({
   input = "Test"
 }) => {
   const { showHeader } = useNav();
+  console.log(showHeader);
   const display = {
-    "display": showHeader ? "flex" : "hidden"
+    "display": showHeader ? "flex" : "none"
   }
   return (
     <HeaderContainer style={display}>
