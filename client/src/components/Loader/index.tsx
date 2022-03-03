@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { css } from "@emotion/react";
-import {ClipLoader, BarLoader} from "react-spinners";
+import {ClipLoader, BarLoader, BounceLoader} from "react-spinners";
 
 
 const wideBar = css`
@@ -29,11 +29,14 @@ const Loader: React.FC< LoaderProps > = ({
 }) => {
 
   const setLoaderType = (type: string = "ClipLoader") =>{
+    console.log(type);
     switch(type){
       case "ClipLoader":
         return <ClipLoader color={color} size={size}/>
+      case "BounceLoader":
+        return <BounceLoader color={color} size={size}/>
       case "BarLoader":
-        return <BarLoader height={10} color={color} css={wideBar}/>
+        return <BarLoader height={height} color={color} width={width}/>
       default:
         <ClipLoader color={color} size={size}/>
     }
