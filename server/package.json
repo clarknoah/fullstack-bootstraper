@@ -7,22 +7,27 @@
     "@neo4j/graphql-ogm": "^3.0.1",
     "@types/node": "^17.0.18",
     "apollo-server-express": "^3.6.3",
+    "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "graphql": "^16.3.0",
+    "module-alias": "^2.2.2",
     "neo4j-driver": "^4.4.3",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "ts-node": "^10.5.0"
+    "ts-node": "^10.7.0",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.13.0"
   },
   "scripts": {
     "build": "tsc",
     "start": "node ./bin/app.js",
-    "dev": "ts-node ./src/app.ts"
+    "dev": "tsnd -r tsconfig-paths/register ./src/app.ts"
   }
 }

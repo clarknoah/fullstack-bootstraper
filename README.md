@@ -23,13 +23,15 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 - [ ] Access Control Templates
 - [ ] Hygen Templates
 - [ ] Job Scheduling and Management
-- [ ] Emailing Support
+- [ ] Emailing Support (SendGrid)
 - [ ] Robust Logging
 - [ ] Standardized API Responses
 - [ ] SSO Integration
 - [ ] SSL Certificate Creation using LetsEncrypt
 - [ ] Passport Library
-- [ ] Auth0i
+- [ ] Auth0
+- [ ] Stripe Integration
+
 
 ### Client-Side Functionality
 - [x] Hygen Templates
