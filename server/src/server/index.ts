@@ -1,30 +1,79 @@
 import express from "express";
 import cors from "cors";
 import { ApolloServer, UserInputError, gql } from "apollo-server-express";
+import  { Neo4jGraphQL } from "@neo4j/graphql";
+import { OGM } from "@neo4j/graphql-ogm";
+import neo4j from "neo4j-driver";
 import { env } from "config/globals";
+import { Neo4jGraphQLAuthJWTPlugin } from "@neo4j/graphql-plugin-auth";
+import * as TypeGraphQL from "type-graphql";
+import { User } from "resources/User/User.entity";
+import { UserResolver } from "resources/User/User.resolver";
+import { type } from "os";
 
-console.log(env);
-const typeDefs = gql`
-  type Query {
-    "A simple type for getting started!"
-    hello: String
+const neoTypeDefs = gql`
+  type User {
+    id: ID!
+    email: String!
   }
 `;
 
 // A map of functions which return data for the schema.
 const resolvers = {
   Query: {
-    hello: () => 'worldzzz',
+    hello: () => 'worldzzWowz',
   },
+  Movie: {
+    title: ()=>'LotR'
+  }
 };
+
+
+
 export class Server{
+
+    public ogm: OGM | undefined;
+
+    private async initializeSchema(){
+      return await TypeGraphQL.buildTypeDefsAndResolvers({
+        resolvers:[
+          UserResolver
+        ]
+      })
+      // return await TypeGraphQL.buildSchema({
+      //   resolvers:[
+      //     UserResolver
+      //   ]
+      // })
+      
+    }
     
     public async startServer(){
         const app = express();
+  
 
+        const driver = neo4j.driver(
+          env.DB_URI,
+          neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
+        );
+        const { typeDefs, resolvers } = await this.initializeSchema();
+        const ogm = new OGM({ typeDefs, driver });
+        
+        console.log(neoTypeDefs, typeDefs);
+        const schema = await new Neo4jGraphQL({ 
+            typeDefs: typeDefs, 
+            driver
+         }).getSchema();
         const server = new ApolloServer({
-            typeDefs,
-            resolvers
+            schema,
+            context:({req})=>{
+              return {
+                req,
+                user: {},
+                em: this.ogm,
+                authorization: req?.headers?.authorization
+              };
+            }
         })
 
 

@@ -8,7 +8,9 @@
     "module": "commonjs",                             /* Specify what module code is generated. */
     "baseUrl": ".",    
     "paths": {
-      "config/*": ["src/config/*"]
+      "config/*": ["src/config/*"],
+      "resources/*": ["src/resources/*"],
+      "interfaces/*": ["src/utils/interfaces/*"]
     },     
     "outDir": "./bin",                                   /* Specify an output folder for all emitted files. */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
