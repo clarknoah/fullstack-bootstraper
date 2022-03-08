@@ -2,40 +2,51 @@
 to: src/resources/<%= name %>/<%= name %>.entity.ts
 ---
 import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
+import { v4 as uuidv4 } from 'uuid';
 
 @ObjectType()
 export class <%= name %> {
 
+    @Directive('@unique')
+    @Field(type=>ID)
+    id!: string;
 
-    @Field((type)=> Date)
-    createdAt!: Date;
+    @Field()
+    field!: string;
 
-    @Field((type)=> ID)
+    @Field()
+    createdAt!: number;
+
+    @Field()
     createdBy!: number;
 
     @Field()
-    modifiedAt!: Date;
-
-    @Field((type)=> ID)
-    modifiedBy!: number;
+    modifiedAt!: number;
 
     @Field()
-    deletedAt!: Date;
+    modifiedBy!: number;
 
-    @Field((type)=> ID)
+     @Field({nullable: true})
+    deletedAt!: number;
+
+    @Field({nullable: true})
     deletedBy!: number;
 
     constructor(input: {
-        createdAt?: Date;
-        createdBy: number;
-        modifiedAt?: Date;
-        modifiedBy: number;
+
+        field: string;
+        createdAt?: number;
+        createdBy?: number;
+        modifiedAt?: number;
+        modifiedBy? : number;
 
     }) {
-        this.createdAt = input.createdAt || new Date();
-        this.createdBy = input.createdBy;
-        this.modifiedAt = input.modifiedAt || new Date();
-        this.modifiedBy = input.modifiedBy;
+        this.id = uuidv4();
+        this.field = input.field;
+        this.createdAt = input.createdAt || Date.now();
+        this.createdBy = input.createdBy || 1;
+        this.modifiedAt = input.modifiedAt || Date.now();
+        this.modifiedBy = input.modifiedBy || 1;
     }
 
 }

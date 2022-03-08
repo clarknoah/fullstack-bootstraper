@@ -1,9 +1,11 @@
-import { IsInt } from "class-validator";
-import { ID, Field, InputType } from "type-graphql";
+---
+to: src/resources/<%= name %>/outputs/<%= output %>-output.model.ts
+---
+import { Field, ObjectType} from "type-graphql";
+import { <%= name %> } from "../<%= name %>.entity";
 
-@InputType()
-export class UserInput {
-  @Field((type: any) => ID)
-  @IsInt()
-  userId: number;
+@ObjectType()
+export class <%= output %>Output {
+  @Field()
+  field!: string;
 }

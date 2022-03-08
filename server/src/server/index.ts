@@ -7,27 +7,12 @@ import neo4j from "neo4j-driver";
 import { env } from "config/globals";
 import { Neo4jGraphQLAuthJWTPlugin } from "@neo4j/graphql-plugin-auth";
 import * as TypeGraphQL from "type-graphql";
-import { User } from "resources/User/User.entity";
 import { UserResolver } from "resources/User/User.resolver";
-import { type } from "os";
-
-const neoTypeDefs = gql`
-  type User {
-    id: ID!
-    email: String!
-  }
-`;
-
-// A map of functions which return data for the schema.
-const resolvers = {
-  Query: {
-    hello: () => 'worldzzWowz',
-  },
-  Movie: {
-    title: ()=>'LotR'
-  }
-};
-
+import { PostResolver } from "resources/Post/Post.resolver";
+import { printSchemaWithDirectives } from "@graphql-tools/utils";
+import { lexicographicSortSchema } from "graphql";
+import { User } from "resources/User/User.entity"
+import { Post } from "resources/Post/Post.entity";
 
 
 export class Server{
@@ -35,17 +20,34 @@ export class Server{
     public ogm: OGM | undefined;
 
     private async initializeSchema(){
-      return await TypeGraphQL.buildTypeDefsAndResolvers({
+      console.log(__dirname);
+    const schema = await TypeGraphQL.buildSchema({
         resolvers:[
-          UserResolver
+          UserResolver,
+          PostResolver
+        ],
+        orphanedTypes: [User, Post]
+       // orphanedTypes: [__dirname + "../resources/**/*.resolver.{ts,js}", __dirname + "/resolvers/**/*.{ts,js}"]
+      })
+
+    const { resolvers } = await TypeGraphQL.buildTypeDefsAndResolvers({
+        resolvers:[
+          UserResolver,
+          PostResolver
         ]
       })
-      // return await TypeGraphQL.buildSchema({
-      //   resolvers:[
-      //     UserResolver
-      //   ]
-      // })
-      
+      try {
+        const stringDefs = printSchemaWithDirectives(lexicographicSortSchema(schema));
+        console.log("Directive Schema\n",stringDefs);
+        const typeDefs = gql`
+        ${stringDefs}
+        `;
+        return {resolvers, typeDefs}
+
+      }catch(err){
+        console.log("There is a problem syntax error in your schema", err)
+        throw "This is all screwed up";
+      }
     }
     
     public async startServer(){
@@ -57,20 +59,26 @@ export class Server{
           neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
         );
         const { typeDefs, resolvers } = await this.initializeSchema();
-        const ogm = new OGM({ typeDefs, driver });
-        
-        console.log(neoTypeDefs, typeDefs);
-        const schema = await new Neo4jGraphQL({ 
-            typeDefs: typeDefs, 
+
+        const ogm = new OGM({ typeDefs, resolvers, driver });
+        ogm.init();
+ 
+        const neoSchema:Neo4jGraphQL = await new Neo4jGraphQL({ 
+            typeDefs, 
+            resolvers,
             driver
-         }).getSchema();
+         })
+
+         const schema = await neoSchema.getSchema();
+         await neoSchema.assertIndexesAndConstraints({ options: { create: true }});
+
         const server = new ApolloServer({
             schema,
             context:({req})=>{
               return {
                 req,
                 user: {},
-                em: this.ogm,
+                ogm: ogm,
                 authorization: req?.headers?.authorization
               };
             }
