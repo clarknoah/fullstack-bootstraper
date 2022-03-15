@@ -66,7 +66,12 @@ export class Server{
         const neoSchema:Neo4jGraphQL = await new Neo4jGraphQL({ 
             typeDefs, 
             resolvers,
-            driver
+            driver,
+            plugins: {
+              auth: new Neo4jGraphQLAuthJWTPlugin({
+                  secret: env.JWT_TOKEN_SECRET
+              })
+          }
          })
 
          const schema = await neoSchema.getSchema();

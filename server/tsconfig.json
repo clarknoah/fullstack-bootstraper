@@ -10,7 +10,9 @@
     "paths": {
       "config/*": ["src/config/*"],
       "resources/*": ["src/resources/*"],
-      "interfaces/*": ["src/utils/interfaces/*"]
+      "interfaces/*": ["src/utils/interfaces/*"],
+      "utils/*": ["src/utils/*"],
+      "middleware/*": ["src/middleware/*"],
     },     
     "outDir": "./bin",                                   /* Specify an output folder for all emitted files. */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
