@@ -5,6 +5,6 @@ import { IsString, IsInt } from "class-validator";
 export class PostInput {
   @Field((type: any) => String)
   @IsString()
-  content?: string;
+  content!: string;
 
 }

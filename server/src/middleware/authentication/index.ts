@@ -4,26 +4,32 @@ import { User } from "resources/User/User.entity";
 import { verifyToken,  JwtType } from "utils/jwt";
 import {NotAuthenticatedError} from "utils/errors/";
 
-async function verify(context: Context, token?: string){
-    const { ogm } = context;
+export async function verify(context: Context) {
+    const { ogm, authorization: token } = context;
     const auth: any = await verifyToken({
         token,
         jwtType: JwtType.access,
       });
     const User = ogm.model("User");
-    return await User.find({
+
+    let user = await User.find({
         where: {
             id: auth.userId,
             }
         });
+    if (!user) {
+        throw new Error("User not found");
+    }
+    return user[0];
+    
 }
 
-export function authorized(roles: string[]): MiddlewareFn {
+export function authorized(): MiddlewareFn {
     return async (props: any, next) => {
         try{
-            const { context:{ ogm, authorization } }: { context: Context } = props;
+            const { context}: { context: Context } = props;
 
-            const user = verify(props.context, authorization);
+            const user = await verify(props.context);
 
             if(!user){
                 throw new NotAuthenticatedError({
@@ -34,7 +40,8 @@ export function authorized(roles: string[]): MiddlewareFn {
                   });
             }
 
-
+            context.user = user;
+            next();
         }catch(err){
             console.log(err);
         }

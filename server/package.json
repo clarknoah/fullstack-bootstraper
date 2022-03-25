@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/uuid": "^8.3.4",
+    "nodemon": "^2.0.15",
     "ts-node": "^10.7.0",
     "ts-node-dev": "^1.1.8",
     "tsconfig-paths": "^3.13.0"
@@ -36,6 +37,6 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./bin/app.js",
-    "dev": "tsnd -r tsconfig-paths/register ./src/app.ts"
+    "dev": "nodemon"
   }
 }

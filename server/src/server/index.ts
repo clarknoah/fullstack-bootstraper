@@ -82,6 +82,7 @@ export class Server{
          const schema = await neoSchema.getSchema();
          await neoSchema.assertIndexesAndConstraints({ options: { create: true }});
 
+ 
         const server = new ApolloServer({
             schema,
             context:({req})=>{

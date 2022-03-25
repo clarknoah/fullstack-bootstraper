@@ -15,23 +15,23 @@ export class Post {
     content!: string;
 
 
-    @Directive(`@relationship(type: "CREATED_POST", direction: IN)`)
-    @Field(type => User)
-    createdPost!: User;
+    // @Directive(`@relationship(type: "CREATED_POST", direction: IN)`)
+    // @Field(type => User)
+    // createdPost!: User;
 
-    // @Directive(`User! @relationship(type: "CREATED", direction: IN`)
-    // @Field(type=> User)
-    // createdBy?: User
+    @Directive(`@relationship(type: "CREATED", direction: IN)`)
+    @Field(type => User)
+    createdBy!: User;
 
     @Directive("@timestamp(operations: [CREATE])")
     @Field(type => Date)
     createdAt!: string;
 
-    @Field(type=>ID)
-    createdBy!: string;
+    // @Field(type=>ID)
+    // createdBy!: string;
 
-    @Field(type=>ID)
-    modifiedBy!: string;
+    // @Field(type=>ID)
+    // modifiedBy!: string;
 
     @Directive("@timestamp(operations: [CREATE, UPDATE])")
     @Field(type => Date)
