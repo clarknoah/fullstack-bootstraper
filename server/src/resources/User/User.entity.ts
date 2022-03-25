@@ -1,8 +1,11 @@
-import { Field, ID, ObjectType, registerEnumType, Directive } from "type-graphql";
+import { Field, ID, ObjectType, registerEnumType, Directive, GraphQLTimestamp } from "type-graphql";
 import {Post} from "resources/Post/Post.entity";
 import { v4 as uuidv4 } from 'uuid';
 
+
+
 @ObjectType()
+@Directive(`@node(label: "User")`)
 export class User {
 
     @Directive('@id')
@@ -14,17 +17,19 @@ export class User {
     password!: string;
 
     @Field()
+    @Directive(`@unique`)
     email!: string;
 
     @Directive("@timestamp(operations: [CREATE])")
-    @Field()
-    createdAt!: number;
+    @Field(type => Date)
+    createdAt!: string;
 
     @Directive("@timestamp(operations: [CREATE, UPDATE])")
-    lastModifiedAt!: number;
+    @Field(type => Date)
+    lastModifiedAt!: string;
 
-    @Field(type=>ID)
-    lastModifiedBy!: string;
+    @Field(type=>ID, { nullable: true })
+    lastModifiedBy?: string;
 
     @Field({ nullable: true })
     deletedAt?: number;
@@ -42,16 +47,5 @@ export class User {
     friends?: User[]
 
 
-    constructor(input: {
-        email: string;
-       // createdAt?: number;
-        createdBy?: number;
-       // modifiedAt?: number;
-        modifiedBy? : number;
-
-    }) {
-        this.id = uuidv4();
-        this.email = input.email;
-    }
 
 }

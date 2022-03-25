@@ -30,14 +30,16 @@ export class PostResolver {
 
         const PostOGM = ogm.model("Post");
         console.log(PostOGM);
-       const post =  new Post({ content:content! })
+      // const post =  new Post({ content:content! })
        let output = await PostOGM.create({
            input:[
-               post
+               {
+                   content
+               }
            ]
        })
 
-        return {content: post.content};
+        return {content};
     }
 
 }

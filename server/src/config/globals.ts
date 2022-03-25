@@ -10,7 +10,7 @@ type JwtToken = {
     issuer: string;
     subject: string;
     audience: string;
-    expiresIn: number;
+    expiresIn: string;
 }
 
 
@@ -38,12 +38,12 @@ export const env:EnvVars = {
         issuer: process.env.JWT_TOKEN_ISSUER || "",
         subject: process.env.JWT_TOKEN_SUBJECT || "",
         audience: process.env.JWT_TOKEN_AUDIENCE || "",
-        expiresIn: parseInt(process.env.JWT_TOKEN_TTL!),
+        expiresIn: process.env.JWT_TOKEN_TTL! || "15m"
       },
       REFRESH_JWT_TOKEN: {
         issuer: process.env.REFRESH_JWT_TOKEN_ISSUER || "",
         subject: process.env.REFRESH_JWT_TOKEN_SUBJECT || "",
         audience: process.env.REFRESH_JWT_TOKEN_AUDIENCE || "",
-        expiresIn: parseInt(process.env.REFRESH_JWT_TOKEN_TTL!)
+        expiresIn: process.env.REFRESH_JWT_TOKEN_TTL! || "1h"
       }
 }

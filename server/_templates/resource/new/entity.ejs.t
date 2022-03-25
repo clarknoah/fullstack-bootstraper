@@ -11,42 +11,24 @@ export class <%= name %> {
     @Field(type=>ID)
     id!: string;
 
-    @Field()
-    field!: string;
+    @Directive("@timestamp(operations: [CREATE])")
+    @Field(type => Date)
+    createdAt!: string;
 
-    @Field()
-    createdAt!: number;
+    @Field(type=>ID)
+    createdBy!: string;
 
-    @Field()
-    createdBy!: number;
+    @Field(type=>ID)
+    modifiedBy!: string;
 
-    @Field()
-    modifiedAt!: number;
+    @Directive("@timestamp(operations: [CREATE, UPDATE])")
+    @Field(type => Date)
+    lastModifiedAt!: string;
 
-    @Field()
-    modifiedBy!: number;
+     @Field(type => Date {nullable: true})
+    deletedAt?: string;
 
-     @Field({nullable: true})
-    deletedAt!: number;
-
-    @Field({nullable: true})
-    deletedBy!: number;
-
-    constructor(input: {
-
-        field: string;
-        createdAt?: number;
-        createdBy?: number;
-        modifiedAt?: number;
-        modifiedBy? : number;
-
-    }) {
-        this.id = uuidv4();
-        this.field = input.field;
-        this.createdAt = input.createdAt || Date.now();
-        this.createdBy = input.createdBy || 1;
-        this.modifiedAt = input.modifiedAt || Date.now();
-        this.modifiedBy = input.modifiedBy || 1;
-    }
+    @Field(type => ID {nullable: true})
+    deletedBy?: string;
 
 }

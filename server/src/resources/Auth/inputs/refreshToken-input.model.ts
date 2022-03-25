@@ -3,7 +3,7 @@ import { IsString } from "class-validator";
 
 
 @InputType()
-export class RefreshTokenInput {
+export default class RefreshTokenInput {
   @Field(type=>String)
   @IsString()
   accessToken!: string;

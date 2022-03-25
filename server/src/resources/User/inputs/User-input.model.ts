@@ -1,9 +1,10 @@
-import { Field, InputType } from "type-graphql";
-import { IsInt } from "class-validator";
+import { Field, InputType} from "type-graphql";
+import { IsString } from "class-validator";
+import { User } from "../User.entity";
 
 @InputType()
-export class UserInput {
+export default class UserInput {
   @Field()
-  @IsInt()
-  userId!: number;
+  @IsString()
+  field!: string;
 }

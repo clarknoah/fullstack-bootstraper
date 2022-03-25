@@ -2,13 +2,14 @@ import express from "express";
 import cors from "cors";
 import { ApolloServer, UserInputError, gql } from "apollo-server-express";
 import  { Neo4jGraphQL } from "@neo4j/graphql";
-import { OGM } from "@neo4j/graphql-ogm";
+import { OGM, generate } from "@neo4j/graphql-ogm";
 import neo4j from "neo4j-driver";
 import { env } from "config/globals";
 import { Neo4jGraphQLAuthJWTPlugin } from "@neo4j/graphql-plugin-auth";
 import * as TypeGraphQL from "type-graphql";
 import { UserResolver } from "resources/User/User.resolver";
 import { PostResolver } from "resources/Post/Post.resolver";
+import { AuthResolver } from "resources/Auth/Auth.resolver";
 import { printSchemaWithDirectives } from "@graphql-tools/utils";
 import { lexicographicSortSchema } from "graphql";
 import { User } from "resources/User/User.entity"
@@ -24,7 +25,8 @@ export class Server{
     const schema = await TypeGraphQL.buildSchema({
         resolvers:[
           UserResolver,
-          PostResolver
+          PostResolver,
+          AuthResolver
         ],
         orphanedTypes: [User, Post]
        // orphanedTypes: [__dirname + "../resources/**/*.resolver.{ts,js}", __dirname + "/resolvers/**/*.{ts,js}"]
@@ -33,11 +35,13 @@ export class Server{
     const { resolvers } = await TypeGraphQL.buildTypeDefsAndResolvers({
         resolvers:[
           UserResolver,
-          PostResolver
+          PostResolver,
+          AuthResolver
         ]
       })
       try {
-        const stringDefs = printSchemaWithDirectives(lexicographicSortSchema(schema));
+        let stringDefs = printSchemaWithDirectives(lexicographicSortSchema(schema));
+        stringDefs = stringDefs.replace("scalar DateTime", "");
         console.log("Directive Schema\n",stringDefs);
         const typeDefs = gql`
         ${stringDefs}
@@ -62,8 +66,9 @@ export class Server{
 
         const ogm = new OGM({ typeDefs, resolvers, driver });
         ogm.init();
- 
+        
         const neoSchema:Neo4jGraphQL = await new Neo4jGraphQL({ 
+            //typeDefs: neoTypes,
             typeDefs, 
             resolvers,
             driver,

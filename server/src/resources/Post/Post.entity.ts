@@ -14,21 +14,6 @@ export class Post {
     @Field()
     content!: string;
 
-    @Directive("@timestamp(operations: [CREATE])")
-    @Field()
-    createdAt!: number;
-
-    @Directive("@timestamp(operations: [CREATE, UPDATE])")
-    lastModifiedAt!: number;
-
-    @Field()
-    lastModifiedBy!: number;
-
-    @Field({ nullable: true })
-    deletedAt?: number;
-
-    @Field({ nullable: true })
-    deletedBy?: number;
 
     @Directive(`@relationship(type: "CREATED_POST", direction: IN)`)
     @Field(type => User)
@@ -38,20 +23,23 @@ export class Post {
     // @Field(type=> User)
     // createdBy?: User
 
-    constructor(input: {
-        content: string;
-        createdAt?: number;
-        createdBy?: User;
-        modifiedAt?: number;
-        modifiedBy? : number;
+    @Directive("@timestamp(operations: [CREATE])")
+    @Field(type => Date)
+    createdAt!: string;
 
-    }) {
-       // this.id = uuidv4();
-        this.content = input.content;
-       // this.createdAt = input.createdAt || Date.now();
-        // this.createdBy = input.createdBy;
-        //this.modifiedAt = input.modifiedAt || Date.now();
-       // this.modifiedBy = input.modifiedBy || 1;
-    }
+    @Field(type=>ID)
+    createdBy!: string;
 
+    @Field(type=>ID)
+    modifiedBy!: string;
+
+    @Directive("@timestamp(operations: [CREATE, UPDATE])")
+    @Field(type => Date)
+    lastModifiedAt!: string;
+
+    @Field(type => Date, {nullable: true})
+    deletedAt?: string;
+
+    @Field(type => ID, {nullable: true})
+    deletedBy?: string;
 }

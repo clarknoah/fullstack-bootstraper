@@ -14,6 +14,11 @@ import {
   interface IUserPayload {
     userId: string;
   }
+
+  interface UserAuthProfile {
+    userId: string,
+    passwordHash: string
+  }
   
   interface IGenerateAccessKeyArgs extends IUserPayload {
     password: string;
@@ -58,15 +63,11 @@ const getJwtTokenSecret = (jwtType = JwtType.access) => {
 
 export const generateAuthToken = ({ payload, jwtType }: IJwtArgs): string => {
     const jwtSignOptions = getJwtTokenSecret(jwtType);
-    console.log("Payload: ", payload);
-    console.log("jwtSignOptions: ", jwtSignOptions);
-    console.log("jwtType: ", jwtType);
     try {
       return jsonwebtoken.sign(payload, jwtSignOptions, {
         ...(jwtType === JwtType.access ? env.JWT_TOKEN! : env.REFRESH_JWT_TOKEN!),
       });
     } catch (err: any) {
-        console.log("Auth Token bad");
         throw new NotAuthenticatedError({
             message: err.message,
             data: {},
@@ -104,11 +105,35 @@ export const generateAccessKey = async ({
     return hashPassword(`${userId}${password}${authProfileToken}`);
 };
 
+export const generateAllTokens = async ({
+  userId, passwordHash
+}: UserAuthProfile ) => {
+
+    const accessToken = generateAuthToken({
+        payload: { userId },
+        jwtType: JwtType.access,
+      })
+
+    const refreshToken = generateAuthToken({
+        payload: { userId },
+        jwtType: JwtType.refresh,
+      })
+      
+    const accessKey = await generateAccessKey({
+        userId,
+        password: passwordHash,
+        authProfileToken: accessToken,
+      })
+    
+      return {accessToken, refreshToken, accessKey};
+    
+  }
+
+
 export const generateRefreshToken = async ({
     payload,
     refreshToken: token = "",
   }: IRefreshTokenArgs): Promise<any> => {
-    console.log(token);
     await verifyToken({ token, jwtType: JwtType.refresh });
     await checkRefreshTokenValidity({ payload });
   
@@ -147,7 +172,6 @@ export const verifyToken = async ({
       // Catch and Propagate Token Error
       if (err instanceof TokenExpiredError) {
         //
-        console.log("Auth Token bad");
         throw new NotAuthenticatedError({
           message: "Provided token is expired",
           data: {},
