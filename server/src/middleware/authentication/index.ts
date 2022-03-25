@@ -10,6 +10,7 @@ export async function verify(context: Context) {
         token,
         jwtType: JwtType.access,
       });
+    console.log(auth);
     const User = ogm.model("User");
 
     let user = await User.find({

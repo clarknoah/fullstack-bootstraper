@@ -38,6 +38,7 @@ export class PostResolver {
     
           // const post =  new Post({ content:content! })
           console.log("Things are wokring");
+
           let output = await PostOGM.create({
               input:[
                   {

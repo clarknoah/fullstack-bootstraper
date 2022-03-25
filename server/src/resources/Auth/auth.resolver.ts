@@ -101,14 +101,14 @@ export class AuthResolver {
         const user = await verify(
             context
         );
-        
+        console.log(user);
         if(!user){
             throw new Error("User not found");
         }
 
-        const {id, email, password} = user[0];
+        const {id, email, password} = user;
 
-        console.log(user[0])
+
 
         const {
             accessKey: generatedAccessKey,

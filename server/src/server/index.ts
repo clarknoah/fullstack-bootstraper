@@ -14,45 +14,46 @@ import { printSchemaWithDirectives } from "@graphql-tools/utils";
 import { lexicographicSortSchema } from "graphql";
 import { User } from "resources/User/User.entity"
 import { Post } from "resources/Post/Post.entity";
+import { ModelMap } from "resources/ogm-types"; // this file will be auto-generated using 'generate'
+
+export async function initializeSchema(){
+  console.log(__dirname);
+  const schema = await TypeGraphQL.buildSchema({
+      resolvers:[
+        UserResolver,
+        PostResolver,
+        AuthResolver
+      ],
+      orphanedTypes: [User, Post]
+     // orphanedTypes: [__dirname + "../resources/**/*.resolver.{ts,js}", __dirname + "/resolvers/**/*.{ts,js}"]
+    })
+
+  const { resolvers } = await TypeGraphQL.buildTypeDefsAndResolvers({
+      resolvers:[
+        UserResolver,
+        PostResolver,
+        AuthResolver
+      ]
+    })
+    try {
+      let stringDefs = printSchemaWithDirectives(lexicographicSortSchema(schema));
+      stringDefs = stringDefs.replace("scalar DateTime", "");
+      console.log("Directive Schema\n",stringDefs);
+      const typeDefs = gql`
+      ${stringDefs}
+      `;
+      return {resolvers, typeDefs}
+
+    }catch(err){
+      console.log("There is a problem syntax error in your schema", err)
+      throw "This is all screwed up";
+    }
+}
 
 
 export class Server{
 
     public ogm: OGM | undefined;
-
-    private async initializeSchema(){
-      console.log(__dirname);
-    const schema = await TypeGraphQL.buildSchema({
-        resolvers:[
-          UserResolver,
-          PostResolver,
-          AuthResolver
-        ],
-        orphanedTypes: [User, Post]
-       // orphanedTypes: [__dirname + "../resources/**/*.resolver.{ts,js}", __dirname + "/resolvers/**/*.{ts,js}"]
-      })
-
-    const { resolvers } = await TypeGraphQL.buildTypeDefsAndResolvers({
-        resolvers:[
-          UserResolver,
-          PostResolver,
-          AuthResolver
-        ]
-      })
-      try {
-        let stringDefs = printSchemaWithDirectives(lexicographicSortSchema(schema));
-        stringDefs = stringDefs.replace("scalar DateTime", "");
-        console.log("Directive Schema\n",stringDefs);
-        const typeDefs = gql`
-        ${stringDefs}
-        `;
-        return {resolvers, typeDefs}
-
-      }catch(err){
-        console.log("There is a problem syntax error in your schema", err)
-        throw "This is all screwed up";
-      }
-    }
     
     public async startServer(){
         const app = express();
@@ -62,9 +63,9 @@ export class Server{
           env.DB_URI,
           neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
         );
-        const { typeDefs, resolvers } = await this.initializeSchema();
+        const { typeDefs, resolvers } = await initializeSchema();
 
-        const ogm = new OGM({ typeDefs, resolvers, driver });
+        const ogm = new OGM<ModelMap>({ typeDefs, resolvers, driver });
         ogm.init();
         
         const neoSchema:Neo4jGraphQL = await new Neo4jGraphQL({ 

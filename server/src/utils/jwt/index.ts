@@ -17,7 +17,9 @@ import {
 
   interface UserAuthProfile {
     userId: string,
-    passwordHash: string
+    passwordHash: string,
+    email?: string,
+    roles?: string[]
   }
   
   interface IGenerateAccessKeyArgs extends IUserPayload {
@@ -30,6 +32,7 @@ import {
     password?: string;
     accessKey?: string;
     accessToken?: string;
+    roles?: string[];
   }
   
   interface IVerifyJwtArgs {
@@ -106,16 +109,16 @@ export const generateAccessKey = async ({
 };
 
 export const generateAllTokens = async ({
-  userId, passwordHash
+  userId, passwordHash, email, roles
 }: UserAuthProfile ) => {
 
     const accessToken = generateAuthToken({
-        payload: { userId },
+        payload: { userId, email, roles},
         jwtType: JwtType.access,
       })
 
     const refreshToken = generateAuthToken({
-        payload: { userId },
+        payload: { userId, email, roles },
         jwtType: JwtType.refresh,
       })
       

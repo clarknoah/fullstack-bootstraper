@@ -37,6 +37,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./bin/app.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "generate-types":"tsnd -r tsconfig-paths/register ./src/utils/generate-types/index.ts"
   }
 }
