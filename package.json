@@ -6,8 +6,14 @@
   "repository": "git@github.com:clarknoah/fullstack-bootstraper.git",
   "author": "Noah Clark <noahbc08@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
-  "scripts":{
-    "import-envs":"./scripts/import_envs.sh"
+  "dependencies": {
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3"
+  },
+  "scripts": {
+    "import-envs": "./scripts/import_envs.sh",
+    "build": "cross-env concurrently yarn:build:*",
+    "build:client": "yarn --cwd client build",
+    "build:server": "yarn --cwd server build"
   }
 }

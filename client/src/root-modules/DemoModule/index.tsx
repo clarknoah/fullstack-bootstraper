@@ -7,7 +7,7 @@ import { NavProvider } from "context/navContext";
 import GlobalStyles from "context-components/globalStyles";
 import { ThemeProvider } from "context/themeContext";
 import { LoadingProvider } from "context/loadingContext";
-import GlobalLoader from "context-components/GlobalLoader";
+//import GlobalLoader from "context-components/GlobalLoader";
 
 import App from "App";
 interface DemoModuleProps {

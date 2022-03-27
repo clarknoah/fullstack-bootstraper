@@ -1,7 +1,12 @@
 import React from "react";
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyles = createGlobalStyle`
+type ThemeType = {
+  body: string;
+  text: string;
+}
+
+const GlobalStyles = createGlobalStyle<{theme: ThemeType}>`
   body {
     background: ${({ theme }) => theme.body};
     color: ${({ theme }) => theme.text};

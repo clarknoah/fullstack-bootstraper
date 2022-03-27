@@ -41,10 +41,9 @@ jspm_packages/
 /cypress/screenshots
 /cypress/videos
 
-# Artillery
-
-/artillery/reports/*
-/artillery/users.csv
+# Builds
+/server/bin
+/client/dist 
 
 # Mac stuff
 .DS_Store
