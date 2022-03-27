@@ -18,8 +18,8 @@ import { Post } from "resources/Post/Post.entity";
 import { ModelMap } from "resources/ogm-types"; // this file will be auto-generated using 'generate'
 import { join } from "path";
 import serveStatic from "express-static-gzip";
-import fetch from "node-fetch";
-
+import { pingNeo4j } from "../services/cron/pingNeo4j";
+import { pingHeroku } from "../services/cron/pingHeroku";
 
 export async function initializeSchema(){
   console.log(__dirname);
@@ -56,6 +56,17 @@ export async function initializeSchema(){
 }
 
 
+export const initializeNeo4j = async () => {
+  const { typeDefs, resolvers } = await initializeSchema();
+  const driver = neo4j.driver(
+    env.DB_URI,
+    neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
+  );
+  const ogm = new OGM<ModelMap>({ typeDefs, resolvers, driver });
+  return {driver, ogm};
+}
+
+
 export class Server{
 
     public ogm: OGM | undefined;
@@ -65,7 +76,7 @@ export class Server{
   
         const { typeDefs, resolvers } = await initializeSchema();
 
-        const {driver, ogm} = await this.initializeNeo4j();
+        const {driver, ogm} = await initializeNeo4j();
 
         ogm.init();
         
@@ -149,64 +160,7 @@ export class Server{
 
 
     private async initializeWorker(){
-      const { ogm, driver } = await this.initializeNeo4j();
-      ogm.init();
-      console.log("Initializing Crons")
-      new CronJob(
-        "1 * * * * *",
-        async () => {
-          try {
-            console.log("Run Ever");
-            console.log("Start Query: ",new Date())
-            let query = await driver.session({defaultAccessMode: neo4j.session.READ})
-            let users = await query.run(`
-              MATCH (u:User)
-              RETURN u`);
-
-              console.log("End Query: ",new Date())
-              console.log(users.records.length);
-          } catch (error: any) {
-            console.log("every 5 minutes.");
-            console.log(error?.message);
-            console.log(error);
-          }
-        },
-        null,
-        true,
-        "America/New_York"
-      ).start();
-
-      new CronJob(
-        "1 * * * * *",
-        async () => {
-          try {
-            console.log("Pinging Server to keep Heroku Up");
-            fetch("https://intelligent-learning.tech", {
-              method: "GET"}).then(res => {
-                console.log(res);
-              })
-              
-
-          } catch (error: any) {
-            console.log("every 5 minutes.");
-            console.log(error?.message);
-            console.log(error);
-          }
-        },
-        null,
-        true,
-        "America/New_York"
-      ).start();
+      await pingHeroku();
+      await pingNeo4j();
     }
-
-    private async initializeNeo4j(){
-      const { typeDefs, resolvers } = await initializeSchema();
-      const driver = neo4j.driver(
-        env.DB_URI,
-        neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
-      );
-      const ogm = new OGM<ModelMap>({ typeDefs, resolvers, driver });
-      return {driver, ogm};
-    }
-
 }
