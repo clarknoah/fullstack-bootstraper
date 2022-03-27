@@ -15,5 +15,9 @@
     "build": "cross-env concurrently yarn:build:*",
     "build:client": "yarn --cwd client build",
     "build:server": "yarn --cwd server build"
-  }
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ]
 }
