@@ -28,7 +28,7 @@ type EnvVars = {
 
 export const env:EnvVars = {
     NODE_ENV: process.env.NODE_ENV || "development",
-    PORT:process.env.DB_PORT || "3331",
+    PORT:process.env.PORT || "3331",
     DB_USER:process.env.DB_USER!,
     DB_PASSWORD:process.env.DB_PASSWORD!,
     DB_URI: process.env.DB_URI!,
