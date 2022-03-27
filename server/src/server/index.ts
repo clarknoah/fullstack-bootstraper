@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { CronJob } from "cron";
 import { ApolloServer, UserInputError, gql } from "apollo-server-express";
 import  { Neo4jGraphQL } from "@neo4j/graphql";
 import { OGM, generate } from "@neo4j/graphql-ogm";
@@ -17,6 +18,8 @@ import { Post } from "resources/Post/Post.entity";
 import { ModelMap } from "resources/ogm-types"; // this file will be auto-generated using 'generate'
 import { join } from "path";
 import serveStatic from "express-static-gzip";
+import fetch from "node-fetch";
+
 
 export async function initializeSchema(){
   console.log(__dirname);
@@ -60,14 +63,10 @@ export class Server{
     public async startServer(){
         const app = express();
   
-
-        const driver = neo4j.driver(
-          env.DB_URI,
-          neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
-        );
         const { typeDefs, resolvers } = await initializeSchema();
 
-        const ogm = new OGM<ModelMap>({ typeDefs, resolvers, driver });
+        const {driver, ogm} = await this.initializeNeo4j();
+
         ogm.init();
         
         const neoSchema:Neo4jGraphQL = await new Neo4jGraphQL({ 
@@ -85,7 +84,7 @@ export class Server{
          const schema = await neoSchema.getSchema();
          await neoSchema.assertIndexesAndConstraints({ options: { create: true }});
 
- 
+         
         const server = new ApolloServer({
             schema,
             context:({req})=>{
@@ -98,7 +97,7 @@ export class Server{
             }
         })
 
-
+        await this.initializeWorker();
         const clientBuildPath = join(__dirname, "../../../client/dist");
         const storybookBuildPath = join(__dirname, "../../../client/.storybook/dist");
 
@@ -146,6 +145,68 @@ export class Server{
 
 
         return app;
+    }
+
+
+    private async initializeWorker(){
+      const { ogm, driver } = await this.initializeNeo4j();
+      ogm.init();
+      console.log("Initializing Crons")
+      new CronJob(
+        "1 * * * * *",
+        async () => {
+          try {
+            console.log("Run Ever");
+            console.log("Start Query: ",new Date())
+            let query = await driver.session({defaultAccessMode: neo4j.session.READ})
+            let users = await query.run(`
+              MATCH (u:User)
+              RETURN u`);
+
+              console.log("End Query: ",new Date())
+              console.log(users.records.length);
+          } catch (error: any) {
+            console.log("every 5 minutes.");
+            console.log(error?.message);
+            console.log(error);
+          }
+        },
+        null,
+        true,
+        "America/New_York"
+      ).start();
+
+      new CronJob(
+        "1 * * * * *",
+        async () => {
+          try {
+            console.log("Pinging Server to keep Heroku Up");
+            fetch("https://intelligent-learning.tech", {
+              method: "GET"}).then(res => {
+                console.log(res);
+              })
+              
+
+          } catch (error: any) {
+            console.log("every 5 minutes.");
+            console.log(error?.message);
+            console.log(error);
+          }
+        },
+        null,
+        true,
+        "America/New_York"
+      ).start();
+    }
+
+    private async initializeNeo4j(){
+      const { typeDefs, resolvers } = await initializeSchema();
+      const driver = neo4j.driver(
+        env.DB_URI,
+        neo4j.auth.basic(env.DB_USER, env.DB_PASSWORD)
+      );
+      const ogm = new OGM<ModelMap>({ typeDefs, resolvers, driver });
+      return {driver, ogm};
     }
 
 }
