@@ -7,8 +7,8 @@ import {
 } from "type-graphql";
 import { User } from "./User.entity"
 import { Context } from "interfaces/context.interface";
-import { UserOutput } from "./outputs/user-output.model";
-import UserInput from "./inputs/user-input.model";
+import { UserOutput } from "./outputs/User-output.model";
+import UserInput from "./inputs/User-input.model";
 @Resolver(of => User)
 export class UserResolver {
 
