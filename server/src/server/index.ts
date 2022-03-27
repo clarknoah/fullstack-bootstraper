@@ -135,7 +135,7 @@ export class Server{
         await server.start();
         server.applyMiddleware({ app });
 
-        app.get("*", (req, res) => {
+        app.get("/storybook", (req, res) => {
           res.sendFile(join(storybookBuildPath, "index.html"));
         });
 
