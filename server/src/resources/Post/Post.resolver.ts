@@ -1,19 +1,13 @@
 import {
   Arg,
   Ctx,
-  FieldResolver,
-  Info,
   Mutation,
-  Query,
   Resolver,
-  Root,
   UseMiddleware,
 } from "type-graphql";
-import {Post } from "./Post.entity"
 import { Context } from "interfaces/context.interface";
 import { PostInput } from "./inputs/Post-input.model"
 import { PostOutput } from "./outputs/Post-output.model"
-import { successOutput } from "./outputs/success-output.model";
 import { authorized } from "middleware/authentication";
 
 @Resolver()

@@ -1,5 +1,5 @@
 ---
-to: src/resources/<%= name %>/<%= h.changeCase.camelize(name) %>.resolver.ts
+to: src/resources/<%= name %>/<%= h.changeCase.lcFirst(name) %>.resolver.ts
 ---
 import {
   Arg,

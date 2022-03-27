@@ -1,11 +1,8 @@
----
-to: src/resources/<%= name %>/<%= name %>.entity.ts
----
 import { Field, ID, ObjectType, registerEnumType, Directive } from "type-graphql";
 import { v4 as uuidv4 } from 'uuid';
 
 @ObjectType()
-export class <%= name %> {
+export class Email {
 
     @Directive('@unique')
     @Field(type=>ID)
