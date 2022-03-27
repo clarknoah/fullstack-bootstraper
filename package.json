@@ -10,6 +10,9 @@
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3"
   },
+  "engines": {
+    "node": "14.x.x"
+  },
   "scripts": {
     "import-envs": "./scripts/import_envs.sh",
     "build": "cross-env concurrently yarn:build:*",
