@@ -18,7 +18,8 @@
     "import-envs": "./scripts/import_envs.sh",
     "build": "cross-env concurrently yarn:build:*",
     "build:client": "yarn --cwd client build",
-    "build:server": "yarn --cwd server build"
+    "build:server": "yarn --cwd server build",
+    "start": "yarn --cwd server start"
   },
   "workspaces": [
     "client",

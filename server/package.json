@@ -40,7 +40,6 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "start": "yarn --cwd server start",
     "generate-types": "tsnd -r tsconfig-paths/register ./src/utils/generate-types/index.ts"
   }
 }
