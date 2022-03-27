@@ -12,7 +12,7 @@ import {
 import { Auth } from "./Auth.entity"
 import { Context } from "interfaces/context.interface";
 import LoginInput from "./inputs/login-input.model";
-import RefreshTokenInput from "./inputs/RefreshToken-input.model";
+import RefreshTokenInput from "./inputs/refreshToken-input.model";
 import { verifyPassword, hashPassword } from "utils/password";
 import SignUpSuccessOutput from "./outputs/success-output.model";
 import { generateAuthToken, generateAccessKey, generateRefreshToken, generateAllTokens } from "utils/jwt";
