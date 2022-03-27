@@ -13,6 +13,7 @@
   "engines": {
     "node": "14.x.x"
   },
+  "private": true,
   "scripts": {
     "import-envs": "./scripts/import_envs.sh",
     "build": "cross-env concurrently yarn:build:*",
