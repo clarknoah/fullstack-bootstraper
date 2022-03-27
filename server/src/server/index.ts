@@ -8,7 +8,7 @@ import { env } from "config/globals";
 import { Neo4jGraphQLAuthJWTPlugin } from "@neo4j/graphql-plugin-auth";
 import * as TypeGraphQL from "type-graphql";
 import { UserResolver } from "resources/User/user.resolver";
-import { PostResolver } from "resources/Post/Post.resolver";
+import { PostResolver } from "resources/Post/post.resolver";
 import { AuthResolver } from "resources/Auth/auth.resolver";
 import { printSchemaWithDirectives } from "@graphql-tools/utils";
 import { lexicographicSortSchema } from "graphql";
@@ -100,6 +100,7 @@ export class Server{
 
 
         const clientBuildPath = join(__dirname, "../../../client/dist");
+        const storybookBuildPath = join(__dirname, "../../../client/.storybook/dist");
 
         // TODO: Need to uncomment this, for pandaDoc testing purposes
         // app.use(
@@ -133,7 +134,11 @@ export class Server{
         // handleWebhooks(app);
         await server.start();
         server.applyMiddleware({ app });
-    
+
+        app.get("*", (req, res) => {
+          res.sendFile(join(storybookBuildPath, "index.html"));
+        });
+
         //Catch all route for client side react routing
         app.get("*", (req, res) => {
           res.sendFile(join(clientBuildPath, "index.html"));
