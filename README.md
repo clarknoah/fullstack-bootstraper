@@ -18,7 +18,7 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 ## Intended Feature Goals
 
 ### Server-Side Functionality
-- [ ] JSON Web Token Support
+- [x] JSON Web Token Support
 - [ ] Authorization Templates
 - [ ] Access Control Templates
 - [x] Hygen Templates

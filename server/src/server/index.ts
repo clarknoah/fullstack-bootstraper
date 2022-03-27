@@ -7,9 +7,9 @@ import neo4j from "neo4j-driver";
 import { env } from "config/globals";
 import { Neo4jGraphQLAuthJWTPlugin } from "@neo4j/graphql-plugin-auth";
 import * as TypeGraphQL from "type-graphql";
-import { UserResolver } from "resources/User/User.resolver";
+import { UserResolver } from "resources/User/user.resolver";
 import { PostResolver } from "resources/Post/Post.resolver";
-import { AuthResolver } from "resources/Auth/Auth.resolver";
+import { AuthResolver } from "resources/Auth/auth.resolver";
 import { printSchemaWithDirectives } from "@graphql-tools/utils";
 import { lexicographicSortSchema } from "graphql";
 import { User } from "resources/User/User.entity"

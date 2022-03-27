@@ -6,5 +6,8 @@
   "repository": "git@github.com:clarknoah/fullstack-bootstraper.git",
   "author": "Noah Clark <noahbc08@gmail.com>",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "scripts":{
+    "import-envs":"./scripts/import_envs.sh"
+  }
 }
