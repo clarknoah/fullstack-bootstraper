@@ -41,6 +41,6 @@
     "build": "tsc",
     "dev": "nodemon",
     "generate-types": "tsnd -r tsconfig-paths/register ./src/utils/generate-types/index.ts",
-    "start": "cross-env NODE_PATH=bin node bin"
+    "start": "cross-env NODE_PATH=bin node bin/app.js"
   }
 }
