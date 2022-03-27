@@ -39,8 +39,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "cross-env NODE_PATH=dist node dist",
     "dev": "nodemon",
+    "start": "yarn --cwd server start",
     "generate-types": "tsnd -r tsconfig-paths/register ./src/utils/generate-types/index.ts"
   }
 }
