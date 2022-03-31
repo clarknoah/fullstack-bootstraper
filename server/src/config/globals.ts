@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { boolean } from "yup";
 
 enum Environment { 
     PROD = "production",
@@ -14,7 +15,7 @@ type JwtToken = {
 }
 
 
-type EnvVars = {
+export type EnvVars = {
     NODE_ENV: string;
     PORT: string;
     DB_USER:string;
@@ -24,6 +25,12 @@ type EnvVars = {
     REFRESH_JWT_TOKEN_SECRET:string;
     JWT_TOKEN:JwtToken;
     REFRESH_JWT_TOKEN: JwtToken;
+    AWS: {
+        ACCESS_KEY_ID: string;
+        SECRET_ACCESS_KEY: string;
+        REGION: string;
+    }
+    SEND_MAIL:boolean;
 }
 
 export const env:EnvVars = {
@@ -45,5 +52,11 @@ export const env:EnvVars = {
         subject: process.env.REFRESH_JWT_TOKEN_SUBJECT || "",
         audience: process.env.REFRESH_JWT_TOKEN_AUDIENCE || "",
         expiresIn: process.env.REFRESH_JWT_TOKEN_TTL! || "1h"
-      }
+      },
+    AWS: {
+        ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID || "",
+        SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
+        REGION: process.env.AWS_REGION || "us-east-1"
+    },
+    SEND_MAIL: Boolean(process.env.SEND_MAIL) || false
 }

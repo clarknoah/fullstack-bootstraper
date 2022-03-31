@@ -1,0 +1,388 @@
+{
+    "modelName": "bootstrapper",
+    "collections": [
+        {
+            "collectionName": "User",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "0ca0bc80-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "0c9cc4e0-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "Transaction",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "15bda710-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "15b4f480-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "Content",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "1e167e50-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "1e14a990-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "Role",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "2a2cabb0-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "2a2a13a0-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "OldPassword",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "2f6445c0-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "2f627100-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "EmailTemplate",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "5b9ff8f0-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "5b9cc4a0-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "Comment",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "b35d1000-adb1-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "b35c73c0-adb1-11ec-9890-1f3463d928b0"
+        },
+        {
+            "collectionName": "HashTag",
+            "type": "object",
+            "properties": [],
+            "definitions": {
+                "type": "definitions",
+                "properties": [],
+                "GUID": "74a06fc0-adb5-11ec-9890-1f3463d928b0"
+            },
+            "isActivated": true,
+            "additionalProperties": false,
+            "collectionUsers": [],
+            "GUID": "749d1460-adb5-11ec-9890-1f3463d928b0"
+        }
+    ],
+    "buckets": [],
+    "views": [],
+    "relationships": [
+        {
+            "name": "HAS_ROLE",
+            "relationshipType": "",
+            "parentField": [],
+            "parentCardinality": "1",
+            "childField": [],
+            "childCardinality": "1",
+            "parentCollection": "0c9cc4e0-adb1-11ec-9890-1f3463d928b0",
+            "childCollection": "2a2a13a0-adb1-11ec-9890-1f3463d928b0",
+            "level": "entity",
+            "GUID": "9edbbbe0-adb1-11ec-9890-1f3463d928b0",
+            "lineSize": 2,
+            "properties": []
+        },
+        {
+            "name": "CREATED",
+            "relationshipType": "",
+            "parentField": [],
+            "parentCardinality": "1",
+            "childField": [],
+            "childCardinality": "1",
+            "parentCollection": "0c9cc4e0-adb1-11ec-9890-1f3463d928b0",
+            "childCollection": "1e14a990-adb1-11ec-9890-1f3463d928b0",
+            "level": "entity",
+            "GUID": "b35c4cb0-adb1-11ec-9890-1f3463d928b0",
+            "lineSize": 2,
+            "properties": []
+        }
+    ],
+    "users": [],
+    "diagramViews": [],
+    "idToNameHashTable": {
+        "0c9cc4e0-adb1-11ec-9890-1f3463d928b0": "User",
+        "15b4f480-adb1-11ec-9890-1f3463d928b0": "Transaction",
+        "1e14a990-adb1-11ec-9890-1f3463d928b0": "Content",
+        "2a2a13a0-adb1-11ec-9890-1f3463d928b0": "Role",
+        "2f627100-adb1-11ec-9890-1f3463d928b0": "OldPassword",
+        "5b9cc4a0-adb1-11ec-9890-1f3463d928b0": "EmailTemplate",
+        "9edbbbe0-adb1-11ec-9890-1f3463d928b0": "HAS_ROLE",
+        "b35c4cb0-adb1-11ec-9890-1f3463d928b0": "CREATED",
+        "b35c73c0-adb1-11ec-9890-1f3463d928b0": "Comment",
+        "749d1460-adb5-11ec-9890-1f3463d928b0": "HashTag"
+    },
+    "definitions": {
+        "type": "definitions",
+        "properties": [],
+        "GUID": "99ad17f0-adb0-11ec-9890-1f3463d928b0"
+    },
+    "polyglotDefinitions": {
+        "type": "polyglotDefinitions",
+        "properties": [],
+        "GUID": "99ad17f2-adb0-11ec-9890-1f3463d928b0"
+    },
+    "externalDefinitions": {
+        "type": "externalDefinitions",
+        "properties": [],
+        "GUID": "99ad17f1-adb0-11ec-9890-1f3463d928b0"
+    },
+    "sources": [],
+    "decorativeSymbols": [],
+    "dbVersion": "4.3",
+    "dbVendor": "Neo4j",
+    "appTarget": "NEO4J",
+    "creationTS": "2022-03-27T09:30:54.574Z",
+    "GUID": "99acf0e0-adb0-11ec-9890-1f3463d928b0",
+    "isLineageEnabled": false,
+    "hackoladeMeta": {
+        "validationErrors": {
+            "modelName": false
+        }
+    },
+    "description": "# Bootstrapper Graph Model (BGM)\n\nGBM serves as a multi-purpose model to support the following:\n\n* Users\n* Role based Access\n* Subscriptions\n* One Time Purchases\n* Purchase Transaction History\n* Tagging\n* Old Passwords\n* Content and Commenting",
+    "lastModifTS": "2022-03-28T06:05:44.116Z",
+    "persistenceSchemaVersion": "5",
+    "isCreatedByPlugin": true,
+    "pluginInformation": {
+        "pluginName": "Neo4j",
+        "pluginVersion": "0.1.39",
+        "pluginEngineVersion": "1.0.0"
+    },
+    "applicationInformation": {
+        "version": "5.3.2"
+    },
+    "settings": {
+        "centralPane": {
+            "dbLevel": {
+                "erd": [
+                    {
+                        "GUID": "0c9cc4e0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 778,
+                        "y": 398,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "15b4f480-adb1-11ec-9890-1f3463d928b0",
+                        "x": 873,
+                        "y": 441,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "1e14a990-adb1-11ec-9890-1f3463d928b0",
+                        "x": 1027,
+                        "y": 509,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "2a2a13a0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 1319,
+                        "y": 180,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "2f627100-adb1-11ec-9890-1f3463d928b0",
+                        "x": 1537,
+                        "y": 193,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "5b9cc4a0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 1227,
+                        "y": 419,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "9edbbbe0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 40,
+                        "y": 40,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#333333"
+                        }
+                    },
+                    {
+                        "GUID": "b35c4cb0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 60,
+                        "y": 60,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#333333"
+                        }
+                    },
+                    {
+                        "GUID": "b35c73c0-adb1-11ec-9890-1f3463d928b0",
+                        "x": 1387,
+                        "y": 649,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    },
+                    {
+                        "GUID": "749d1460-adb5-11ec-9890-1f3463d928b0",
+                        "x": 1488,
+                        "y": 448,
+                        "width": 240,
+                        "height": 100,
+                        "color": {
+                            "hex": "#2196F3"
+                        }
+                    }
+                ],
+                "buckets": [],
+                "collapsedNodes": [],
+                "activeRelationship": "",
+                "activeRelationshipFields": {
+                    "childField": [],
+                    "parentField": []
+                },
+                "selectedCollections": [
+                    "15b4f480-adb1-11ec-9890-1f3463d928b0"
+                ],
+                "displayColorPicker": false,
+                "graphView": {
+                    "erd": [
+                        {
+                            "GUID": "0c9cc4e0-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 629.972497382484,
+                            "y": 225.86724134461053
+                        },
+                        {
+                            "GUID": "15b4f480-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 610.7932196907601,
+                            "y": 787.3126103822193
+                        },
+                        {
+                            "GUID": "1e14a990-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 367.16043236332627,
+                            "y": 371.14580651268574
+                        },
+                        {
+                            "GUID": "2a2a13a0-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 930.2461491090529,
+                            "y": 228.41385157504047
+                        },
+                        {
+                            "GUID": "2f627100-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 1623.4638982606346,
+                            "y": 130.7670733010339
+                        },
+                        {
+                            "GUID": "5b9cc4a0-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 174.57375546641578,
+                            "y": 714.4641472821377
+                        },
+                        {
+                            "GUID": "b35c73c0-adb1-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 1461.9668504706362,
+                            "y": 1081.6049417729207
+                        },
+                        {
+                            "GUID": "749d1460-adb5-11ec-9890-1f3463d928b0",
+                            "size": 100,
+                            "x": 839.6609765810324,
+                            "y": 696.2526771728569
+                        }
+                    ],
+                    "buckets": [],
+                    "decorativeSymbols": [],
+                    "forceLayout": true,
+                    "defaultLinkLength": 300
+                },
+                "diagramViews": [],
+                "decorativeSymbols": [],
+                "nestedCollectionsLayout": "horizontal",
+                "options": []
+            },
+            "collectionLevel": {},
+            "changed": false
+        },
+        "dtDiagram": {
+            "collapsedNodes": [],
+            "shouldDistributeCollections": false
+        }
+    }
+}

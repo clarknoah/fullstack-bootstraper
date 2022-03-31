@@ -138,7 +138,7 @@ export class Server{
           serveStatic(clientBuildPath, {
             enableBrotli: true,
             orderPreference: ["br"],
-          })
+          })asdf
         );
     
         // handleWebhooks(app);

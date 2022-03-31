@@ -2,6 +2,13 @@ import { Field, ID, ObjectType, registerEnumType, Directive, GraphQLTimestamp } 
 import {Post} from "resources/Post/Post.entity";
 import { v4 as uuidv4 } from 'uuid';
 
+export enum AccountStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    BANNED = "BANNED",
+    DELETED = "DELETED",
+    PENDING = "PENDING"
+}
 
 
 @ObjectType()
@@ -30,6 +37,9 @@ export class User {
 
     @Field(type=>ID, { nullable: true })
     lastModifiedBy?: string;
+
+    @Field(type=>ID)
+    accountStatus?: string = AccountStatus.PENDING;
 
     @Field({ nullable: true })
     deletedAt?: number;
