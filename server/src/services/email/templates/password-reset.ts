@@ -1,6 +1,6 @@
+import {env} from "config/globals";
 
 type PasswordResetVariables = {
-    email: string;
     token: string;
 }
 
@@ -9,6 +9,7 @@ export const passwordResetTemplate = (vars: PasswordResetVariables) =>{
     const title = `
     Password Reset Details Enclosed
     `
+    const url = `${env.FRONTEND_URL}/reset-password/${vars.token}`;
     const body = `
     <!DOCTYPE html>
     <html lang="en">
@@ -22,9 +23,10 @@ export const passwordResetTemplate = (vars: PasswordResetVariables) =>{
         <h1>Password Reset</h1>
         <p>Click the link below to reset your password</p>
         <a href="${process.env.FRONTEND_URL}/reset-password/${process.env.REFRESH_JWT_TOKEN_SECRET}">Reset Password</a>
+        <p>${url}</p>
     </body>
     </html>
     `;
 
-    return {title, body}
+    return {title, body};
 }

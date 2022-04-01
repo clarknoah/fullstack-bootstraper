@@ -108,7 +108,12 @@ export type Mutation = {
   login?: Maybe<LoginSuccessOutput>;
   makePost?: Maybe<PostOutput>;
   refreshToken?: Maybe<LoginSuccessOutput>;
+  resetPassword?: Maybe<SignUpSuccessOutput>;
+  sendEmailChangeEmail?: Maybe<SignUpSuccessOutput>;
+  sendResetPasswordEmail?: Maybe<SignUpSuccessOutput>;
   signUp?: Maybe<SignUpSuccessOutput>;
+  verifyNewEmail?: Maybe<SignUpSuccessOutput>;
+  verifyRegistration?: Maybe<SignUpSuccessOutput>;
   createLoginSuccessOutputs: CreateLoginSuccessOutputsMutationResponse;
   deleteLoginSuccessOutputs: DeleteInfo;
   updateLoginSuccessOutputs: UpdateLoginSuccessOutputsMutationResponse;
@@ -141,8 +146,28 @@ export type MutationRefreshTokenArgs = {
   input: RefreshTokenInput;
 };
 
+export type MutationResetPasswordArgs = {
+  input?: InputMaybe<ResetPasswordInput>;
+};
+
+export type MutationSendEmailChangeEmailArgs = {
+  input?: InputMaybe<ChangeEmailInput>;
+};
+
+export type MutationSendResetPasswordEmailArgs = {
+  input?: InputMaybe<SubmitResetPasswordInput>;
+};
+
 export type MutationSignUpArgs = {
   input?: InputMaybe<SignupInput>;
+};
+
+export type MutationVerifyNewEmailArgs = {
+  input?: InputMaybe<VerifyEmailInput>;
+};
+
+export type MutationVerifyRegistrationArgs = {
+  input?: InputMaybe<VerifyEmailInput>;
 };
 
 export type MutationCreateLoginSuccessOutputsArgs = {
@@ -423,12 +448,16 @@ export type PostUserCreatedByAggregationSelection = {
 
 export type PostUserCreatedByNodeAggregateSelection = {
   __typename?: "PostUserCreatedByNodeAggregateSelection";
+  accountStatus: IdAggregateSelectionNonNullable;
   deletedAt: FloatAggregateSelectionNullable;
   deletedBy: FloatAggregateSelectionNullable;
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
+  pendingEmail: StringAggregateSelectionNullable;
+  resetToken: StringAggregateSelectionNullable;
+  verificationToken: StringAggregateSelectionNonNullable;
   createdAt: DateTimeAggregateSelectionNonNullable;
   lastModifiedAt: DateTimeAggregateSelectionNonNullable;
 };
@@ -502,12 +531,16 @@ export type UpdateUsersMutationResponse = {
 
 export type User = {
   __typename?: "User";
+  accountStatus: Scalars["ID"];
   deletedAt?: Maybe<Scalars["Float"]>;
   deletedBy?: Maybe<Scalars["Float"]>;
   email: Scalars["String"];
   id: Scalars["ID"];
   lastModifiedBy?: Maybe<Scalars["ID"]>;
   password: Scalars["String"];
+  pendingEmail?: Maybe<Scalars["String"]>;
+  resetToken?: Maybe<Scalars["String"]>;
+  verificationToken: Scalars["String"];
   createdAt: Scalars["DateTime"];
   lastModifiedAt: Scalars["DateTime"];
   friends?: Maybe<User>;
@@ -559,12 +592,16 @@ export type UserPostsConnectionArgs = {
 export type UserAggregateSelection = {
   __typename?: "UserAggregateSelection";
   count: Scalars["Int"];
+  accountStatus: IdAggregateSelectionNonNullable;
   deletedAt: FloatAggregateSelectionNullable;
   deletedBy: FloatAggregateSelectionNullable;
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
+  pendingEmail: StringAggregateSelectionNullable;
+  resetToken: StringAggregateSelectionNullable;
+  verificationToken: StringAggregateSelectionNonNullable;
   createdAt: DateTimeAggregateSelectionNonNullable;
   lastModifiedAt: DateTimeAggregateSelectionNonNullable;
 };
@@ -630,14 +667,22 @@ export type UserUserFriendsAggregationSelection = {
 
 export type UserUserFriendsNodeAggregateSelection = {
   __typename?: "UserUserFriendsNodeAggregateSelection";
+  accountStatus: IdAggregateSelectionNonNullable;
   deletedAt: FloatAggregateSelectionNullable;
   deletedBy: FloatAggregateSelectionNullable;
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
+  pendingEmail: StringAggregateSelectionNullable;
+  resetToken: StringAggregateSelectionNullable;
+  verificationToken: StringAggregateSelectionNonNullable;
   createdAt: DateTimeAggregateSelectionNonNullable;
   lastModifiedAt: DateTimeAggregateSelectionNonNullable;
+};
+
+export type ChangeEmailInput = {
+  newEmail: Scalars["String"];
 };
 
 /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
@@ -782,6 +827,7 @@ export type PostCreatedByFieldInput = {
 export type PostCreatedByNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<PostCreatedByNodeAggregationWhereInput>>;
   OR?: InputMaybe<Array<PostCreatedByNodeAggregationWhereInput>>;
+  accountStatus_EQUAL?: InputMaybe<Scalars["ID"]>;
   id_EQUAL?: InputMaybe<Scalars["ID"]>;
   lastModifiedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
   email_EQUAL?: InputMaybe<Scalars["String"]>;
@@ -824,6 +870,66 @@ export type PostCreatedByNodeAggregationWhereInput = {
   password_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
   password_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
   password_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_EQUAL?: InputMaybe<Scalars["String"]>;
+  pendingEmail_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_EQUAL?: InputMaybe<Scalars["String"]>;
+  resetToken_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  resetToken_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_EQUAL?: InputMaybe<Scalars["String"]>;
+  verificationToken_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  verificationToken_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
   deletedAt_EQUAL?: InputMaybe<Scalars["Float"]>;
   deletedAt_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
   deletedAt_MIN_EQUAL?: InputMaybe<Scalars["Float"]>;
@@ -944,9 +1050,8 @@ export type PostInput = {
 };
 
 export type PostOnCreateInput = {
-  content?: InputMaybe<Scalars["String"]>;
+  content: Scalars["String"];
   deletedBy?: InputMaybe<Scalars["ID"]>;
-  id?: InputMaybe<Scalars["ID"]>;
 };
 
 export type PostOptions = {
@@ -1091,6 +1196,12 @@ export type RefreshTokenInput = {
   refreshToken: Scalars["String"];
 };
 
+export type ResetPasswordInput = {
+  email: Scalars["String"];
+  password: Scalars["String"];
+  token: Scalars["String"];
+};
+
 export type SignupInput = {
   email: Scalars["String"];
   password: Scalars["String"];
@@ -1123,6 +1234,10 @@ export type SignUpSuccessOutputWhere = {
   success_NOT?: InputMaybe<Scalars["Boolean"]>;
 };
 
+export type SubmitResetPasswordInput = {
+  email: Scalars["String"];
+};
+
 export type UserConnectInput = {
   friends?: InputMaybe<UserFriendsConnectFieldInput>;
   posts?: InputMaybe<UserPostsConnectFieldInput>;
@@ -1142,11 +1257,15 @@ export type UserConnectWhere = {
 };
 
 export type UserCreateInput = {
+  accountStatus: Scalars["ID"];
   deletedAt?: InputMaybe<Scalars["Float"]>;
   deletedBy?: InputMaybe<Scalars["Float"]>;
   email: Scalars["String"];
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
   password: Scalars["String"];
+  pendingEmail?: InputMaybe<Scalars["String"]>;
+  resetToken?: InputMaybe<Scalars["String"]>;
+  verificationToken: Scalars["String"];
   friends?: InputMaybe<UserFriendsFieldInput>;
   posts?: InputMaybe<UserPostsFieldInput>;
 };
@@ -1220,6 +1339,7 @@ export type UserFriendsFieldInput = {
 export type UserFriendsNodeAggregationWhereInput = {
   AND?: InputMaybe<Array<UserFriendsNodeAggregationWhereInput>>;
   OR?: InputMaybe<Array<UserFriendsNodeAggregationWhereInput>>;
+  accountStatus_EQUAL?: InputMaybe<Scalars["ID"]>;
   id_EQUAL?: InputMaybe<Scalars["ID"]>;
   lastModifiedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
   email_EQUAL?: InputMaybe<Scalars["String"]>;
@@ -1262,6 +1382,66 @@ export type UserFriendsNodeAggregationWhereInput = {
   password_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
   password_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
   password_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_EQUAL?: InputMaybe<Scalars["String"]>;
+  pendingEmail_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  pendingEmail_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  pendingEmail_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_EQUAL?: InputMaybe<Scalars["String"]>;
+  resetToken_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  resetToken_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  resetToken_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  resetToken_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  resetToken_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  resetToken_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_EQUAL?: InputMaybe<Scalars["String"]>;
+  verificationToken_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  verificationToken_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  verificationToken_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  verificationToken_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  verificationToken_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
   deletedAt_EQUAL?: InputMaybe<Scalars["Float"]>;
   deletedAt_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
   deletedAt_MIN_EQUAL?: InputMaybe<Scalars["Float"]>;
@@ -1363,12 +1543,15 @@ export type UserInput = {
 };
 
 export type UserOnCreateInput = {
+  accountStatus: Scalars["ID"];
   deletedAt?: InputMaybe<Scalars["Float"]>;
   deletedBy?: InputMaybe<Scalars["Float"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["ID"]>;
+  email: Scalars["String"];
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
-  password?: InputMaybe<Scalars["String"]>;
+  password: Scalars["String"];
+  pendingEmail?: InputMaybe<Scalars["String"]>;
+  resetToken?: InputMaybe<Scalars["String"]>;
+  verificationToken: Scalars["String"];
 };
 
 export type UserOptions = {
@@ -1562,12 +1745,16 @@ export type UserRelationInput = {
 
 /** Fields to sort Users by. The order in which sorts are applied is not guaranteed when specifying many fields in one UserSort object. */
 export type UserSort = {
+  accountStatus?: InputMaybe<SortDirection>;
   deletedAt?: InputMaybe<SortDirection>;
   deletedBy?: InputMaybe<SortDirection>;
   email?: InputMaybe<SortDirection>;
   id?: InputMaybe<SortDirection>;
   lastModifiedBy?: InputMaybe<SortDirection>;
   password?: InputMaybe<SortDirection>;
+  pendingEmail?: InputMaybe<SortDirection>;
+  resetToken?: InputMaybe<SortDirection>;
+  verificationToken?: InputMaybe<SortDirection>;
   createdAt?: InputMaybe<SortDirection>;
   lastModifiedAt?: InputMaybe<SortDirection>;
 };
@@ -1578,11 +1765,15 @@ export type UserUniqueWhere = {
 };
 
 export type UserUpdateInput = {
+  accountStatus?: InputMaybe<Scalars["ID"]>;
   deletedAt?: InputMaybe<Scalars["Float"]>;
   deletedBy?: InputMaybe<Scalars["Float"]>;
   email?: InputMaybe<Scalars["String"]>;
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
   password?: InputMaybe<Scalars["String"]>;
+  pendingEmail?: InputMaybe<Scalars["String"]>;
+  resetToken?: InputMaybe<Scalars["String"]>;
+  verificationToken?: InputMaybe<Scalars["String"]>;
   friends?: InputMaybe<UserFriendsUpdateFieldInput>;
   posts?: InputMaybe<UserPostsUpdateFieldInput>;
 };
@@ -1590,6 +1781,16 @@ export type UserUpdateInput = {
 export type UserWhere = {
   OR?: InputMaybe<Array<UserWhere>>;
   AND?: InputMaybe<Array<UserWhere>>;
+  accountStatus?: InputMaybe<Scalars["ID"]>;
+  accountStatus_NOT?: InputMaybe<Scalars["ID"]>;
+  accountStatus_IN?: InputMaybe<Array<Scalars["ID"]>>;
+  accountStatus_NOT_IN?: InputMaybe<Array<Scalars["ID"]>>;
+  accountStatus_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  accountStatus_NOT_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  accountStatus_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  accountStatus_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  accountStatus_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  accountStatus_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
   deletedAt?: InputMaybe<Scalars["Float"]>;
   deletedAt_NOT?: InputMaybe<Scalars["Float"]>;
   deletedAt_IN?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
@@ -1646,6 +1847,36 @@ export type UserWhere = {
   password_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
   password_ENDS_WITH?: InputMaybe<Scalars["String"]>;
   password_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  pendingEmail?: InputMaybe<Scalars["String"]>;
+  pendingEmail_NOT?: InputMaybe<Scalars["String"]>;
+  pendingEmail_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  pendingEmail_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  pendingEmail_CONTAINS?: InputMaybe<Scalars["String"]>;
+  pendingEmail_NOT_CONTAINS?: InputMaybe<Scalars["String"]>;
+  pendingEmail_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  pendingEmail_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  pendingEmail_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  pendingEmail_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  resetToken?: InputMaybe<Scalars["String"]>;
+  resetToken_NOT?: InputMaybe<Scalars["String"]>;
+  resetToken_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  resetToken_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  resetToken_CONTAINS?: InputMaybe<Scalars["String"]>;
+  resetToken_NOT_CONTAINS?: InputMaybe<Scalars["String"]>;
+  resetToken_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  resetToken_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  resetToken_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  resetToken_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  verificationToken?: InputMaybe<Scalars["String"]>;
+  verificationToken_NOT?: InputMaybe<Scalars["String"]>;
+  verificationToken_IN?: InputMaybe<Array<Scalars["String"]>>;
+  verificationToken_NOT_IN?: InputMaybe<Array<Scalars["String"]>>;
+  verificationToken_CONTAINS?: InputMaybe<Scalars["String"]>;
+  verificationToken_NOT_CONTAINS?: InputMaybe<Scalars["String"]>;
+  verificationToken_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  verificationToken_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  verificationToken_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  verificationToken_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
   createdAt?: InputMaybe<Scalars["DateTime"]>;
   createdAt_NOT?: InputMaybe<Scalars["DateTime"]>;
   createdAt_IN?: InputMaybe<Array<Scalars["DateTime"]>>;
@@ -1672,6 +1903,10 @@ export type UserWhere = {
   friendsConnection_NOT?: InputMaybe<UserFriendsConnectionWhere>;
   postsConnection?: InputMaybe<UserPostsConnectionWhere>;
   postsConnection_NOT?: InputMaybe<UserPostsConnectionWhere>;
+};
+
+export type VerifyEmailInput = {
+  token: Scalars["String"];
 };
 
 export interface StringAggregateInputNullable {
@@ -1979,12 +2214,16 @@ export interface FloatAggregateInputNullable {
 }
 export interface UserAggregateSelectionInput {
   count?: boolean;
+  accountStatus?: IdAggregateInputNonNullable;
   deletedAt?: FloatAggregateInputNullable;
   deletedBy?: FloatAggregateInputNullable;
   email?: StringAggregateInputNonNullable;
   id?: IdAggregateInputNonNullable;
   lastModifiedBy?: IdAggregateInputNullable;
   password?: StringAggregateInputNonNullable;
+  pendingEmail?: StringAggregateInputNullable;
+  resetToken?: StringAggregateInputNullable;
+  verificationToken?: StringAggregateInputNonNullable;
   createdAt?: DateTimeAggregateInputNonNullable;
   lastModifiedAt?: DateTimeAggregateInputNonNullable;
 }

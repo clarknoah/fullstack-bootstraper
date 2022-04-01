@@ -3,7 +3,6 @@ to: src/resources/<%= name %>/inputs/<%= h.changeCase.lcFirst(input) %>-input.mo
 ---
 import { Field, InputType} from "type-graphql";
 import { IsString } from "class-validator";
-import { <%= name %> } from "../<%= name %>.entity";
 
 @InputType()
 export default class <%= input %>Input {

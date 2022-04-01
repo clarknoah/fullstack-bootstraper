@@ -21,8 +21,9 @@ import serveStatic from "express-static-gzip";
 import { pingNeo4j } from "../services/cron/pingNeo4j";
 import { pingHeroku } from "../services/cron/pingHeroku";
 
-export async function initializeSchema(){
+export async function initializeSchema(types:boolean = false){
   console.log(__dirname);
+  const resolverArray = !types ? [UserResolver, PostResolver, AuthResolver] : [];
   const schema = await TypeGraphQL.buildSchema({
       resolvers:[
         UserResolver,
@@ -138,7 +139,7 @@ export class Server{
           serveStatic(clientBuildPath, {
             enableBrotli: true,
             orderPreference: ["br"],
-          })asdf
+          })
         );
     
         // handleWebhooks(app);

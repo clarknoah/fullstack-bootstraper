@@ -1,7 +1,6 @@
 import { Request } from "express";
-import { User } from "resources/User/User.entity";
 import { OGM } from "@neo4j/graphql-ogm";
-import { ModelMap } from "resources/ogm-types";
+import { ModelMap, User } from "resources/ogm-types";
 
 export interface Context {
   req: Request;

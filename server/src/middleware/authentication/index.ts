@@ -1,6 +1,5 @@
 import { MiddlewareFn } from "type-graphql";
 import { Context } from "interfaces/context.interface";
-import { User } from "resources/User/User.entity";
 import { verifyToken,  JwtType } from "utils/jwt";
 import {NotAuthenticatedError} from "utils/errors/";
 

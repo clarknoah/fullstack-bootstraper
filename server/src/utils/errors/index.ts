@@ -114,3 +114,30 @@ export class NotAuthenticatedError extends DomainError {
     });
   }
 }
+export class EmailVerificationError extends DomainError {
+  protected error_name: string = "email_verification_required";
+
+  protected httpCode: number = 403;
+
+  public constructor(props: IErrorProps) {
+    super(props);
+    const {
+      message = "This account still requires email verification, please check your email",
+      error,
+      data = null,
+    } = props;
+    const stackTrace =
+      env.NODE_ENV === "development"
+        ? {
+            internalData: {
+              error,
+            },
+          }
+        : {};
+    createError("VerificationRequiredError", {
+      message,
+      data,
+      ...stackTrace,
+    });
+  }
+}

@@ -22,6 +22,18 @@ export class User {
     @Directive('@private')
     @Field(type=>String)
     password!: string;
+    
+    @Directive('@private')
+    @Field(type=>String, {nullable:true})
+    pendingEmail?: string;
+
+    @Directive('@private')
+    @Field(type=>String)
+    verificationToken!: string;
+
+    @Directive('@private')
+    @Field(type=>String, {nullable:true})
+    resetToken?: string;
 
     @Field()
     @Directive(`@unique`)

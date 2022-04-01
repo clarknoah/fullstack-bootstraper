@@ -30,7 +30,10 @@ export type EnvVars = {
         SECRET_ACCESS_KEY: string;
         REGION: string;
     }
-    SEND_MAIL:boolean;
+    SEND_EMAIL:boolean;
+    FROM_EMAIL: string;
+    APP_NAME: string;
+    FRONTEND_URL: string;
 }
 
 export const env:EnvVars = {
@@ -58,5 +61,8 @@ export const env:EnvVars = {
         SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY || "",
         REGION: process.env.AWS_REGION || "us-east-1"
     },
-    SEND_MAIL: Boolean(process.env.SEND_MAIL) || false
+    SEND_EMAIL: Boolean(process.env.SEND_EMAIL) || false,
+    APP_NAME: process.env.APP_NAME || "",
+    FROM_EMAIL: process.env.FROM_EMAIL || "no-reply@intelligent-learning.tech",
+    FRONTEND_URL: (process.env.FRONTEND_URL!+":"+process.env.PORT) || ""
 }
