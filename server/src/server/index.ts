@@ -15,6 +15,7 @@ import { printSchemaWithDirectives } from "@graphql-tools/utils";
 import { lexicographicSortSchema } from "graphql";
 import { User } from "resources/User/User.entity"
 import { Post } from "resources/Post/Post.entity";
+import { Role } from "resources/Role/Role.entity";
 import { ModelMap } from "resources/ogm-types"; // this file will be auto-generated using 'generate'
 import { join } from "path";
 import serveStatic from "express-static-gzip";
@@ -28,9 +29,9 @@ export async function initializeSchema(types:boolean = false){
       resolvers:[
         UserResolver,
         PostResolver,
-        AuthResolver
+        AuthResolver,
       ],
-      orphanedTypes: [User, Post]
+      orphanedTypes: [User, Post, Role]
      // orphanedTypes: [__dirname + "../resources/**/*.resolver.{ts,js}", __dirname + "/resolvers/**/*.{ts,js}"]
     })
 
@@ -104,7 +105,7 @@ export class Server{
                 req,
                 user: {},
                 ogm: ogm,
-                authorization: req?.headers?.authorization
+                authorization: req?.headers?.authorization?.split(" ")[1]
               };
             }
         })

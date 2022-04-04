@@ -15,7 +15,7 @@ import LoginInput from "./inputs/login-input.model";
 import RefreshTokenInput from "./inputs/refreshToken-input.model";
 import { verifyPassword, hashPassword } from "utils/password";
 import SignUpSuccessOutput from "./outputs/success-output.model";
-import { generateAuthToken, generateAccessKey, generateRefreshToken, generateAllTokens } from "utils/jwt";
+import { generateAuthToken, generateAccessKey, generateRefreshToken, generateAllTokens, verifyToken } from "utils/jwt";
 import LoginSuccessOutput from "resources/Auth/outputs/loginSuccess-output.model";
 import SignupInput from "resources/Auth/inputs/signup-input.model";
 import { verify } from "middleware/authentication";
@@ -32,6 +32,7 @@ import SubmitResetPasswordInput from "./inputs/submitResetPassword-input.model";
 import ResetPasswordInput from "./inputs/resetPassword-input.model";
 import ChangeEmailInput from "./inputs/changeEmail-input.model";
 import { changeEmailTemplate } from "services/email/templates/changeEmail";
+import { JwtType } from "utils/jwt";
 
 @Resolver((of: any) => Auth)
 export class AuthResolver {
@@ -41,71 +42,95 @@ export class AuthResolver {
         @Arg("input", { nullable: true }) args: SignupInput,
         @Ctx() { user: currentUser, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        const { email, password } = args;
+        try{
+            const { email, password } = args;
+            
+            const User = ogm.model("User");
 
-        //Ensure password meets requirements 
-        //Ensure email doesn't already exist
+            const userExists = await User.find({
+                where: {
+                    email: email
+                }
+            })
 
-        const User = ogm.model("User");
+            if (userExists.length) {
+                throw new Error("User already exists");
+            }
+            //Ensure password meets requirements 
 
-        const inviteToken = randomUUID();
-        const user = await User.create({
-            input: [{
-                email,
-                password: await hashPassword(password),
-                accountStatus: AccountStatus.PENDING,
-                verificationToken: inviteToken
-            }]
-        })
-
-        console.log(user);
-
-        const mail = new EmailService();
-        const emailTemplate = registrationTokenTemplate({email, token:inviteToken});
-        console.log(emailTemplate.body);
-        await mail.sendEmail({
-            to:[email],
-            title: emailTemplate.title,
-            body: emailTemplate.body
-        });
-
-        return { success: true }
+            //Ensure email doesn't already exist
+    
+            const inviteToken = randomUUID();
+            const user = await User.create({
+                input: [{
+                    email,
+                    password: await hashPassword(password),
+                    accountStatus: AccountStatus.PENDING,
+                    verificationToken: inviteToken,
+                    roles: {
+                        connect: {
+                            where:{
+                                node:{
+                                    name_CONTAINS:"USER"
+                                }
+                            }
+                        }
+                    }
+                }]
+            })
+    
+            console.log(user);
+    
+            const mail = new EmailService();
+            const emailTemplate = registrationTokenTemplate({ email, token: inviteToken });
+            console.log(emailTemplate.body);
+            await mail.sendEmail({
+                to: [email],
+                title: emailTemplate.title,
+                body: emailTemplate.body
+            });
+    
+            return { success: true }
+        }catch(err){
+            console.log(err);
+            throw err;
+        }
     }
 
     @Mutation((returns) => SignUpSuccessOutput, { nullable: true })
     async resetPassword(
-        @Arg("input", { nullable: true }) args: ResetPasswordInput ,
+        @Arg("input", { nullable: true }) args: ResetPasswordInput,
         @Ctx() { user: currentUser, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        try{
+        try {
             const { email, password, token } = args;
 
             //Ensure password meets requirements 
             //Ensure email doesn't already exist
-    
+
             const User = ogm.model("User");
-    
+
             const user = await User.find({
                 where: {
                     email: email,
                     resetToken: token
                 }
             })
-    
-            if(user.length 
-                && user[0].email === email 
+
+            if (user.length
+                && user[0].email === email
                 && user[0].resetToken === token
-                ){
+            ) {
                 const mail = new EmailService();
 
 
                 await User.update({
-                    where:{
+                    where: {
                         id: user[0].id,
                         email: email,
                         resetToken: token
                     },
-                    update:{
+                    update: {
                         password: await hashPassword(password),
                         resetToken: ""
                     }
@@ -113,10 +138,10 @@ export class AuthResolver {
 
                 return { success: true }
             }
-            
+
             throw new Error("Invalid token or user");
 
-        }catch(e: any){
+        } catch (e: any) {
             throw e;
         }
     }
@@ -124,95 +149,95 @@ export class AuthResolver {
 
     @UseMiddleware(
         authorized()
-      )
+    )
     @Mutation((returns) => SignUpSuccessOutput, { nullable: true })
     async sendEmailChangeEmail(
-        @Arg("input", { nullable: true }) args: ChangeEmailInput ,
+        @Arg("input", { nullable: true }) args: ChangeEmailInput,
         @Ctx() { user, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        try{
+        try {
             const { newEmail } = args;
 
             //Ensure password meets requirements 
             //Ensure email doesn't already exist
-    
-            const User = ogm.model("User");
-    
 
-            if(user && user!.accountStatus === AccountStatus.ACTIVE){
+            const User = ogm.model("User");
+
+
+            if (user && user!.accountStatus === AccountStatus.ACTIVE) {
                 const mail = new EmailService();
 
                 const token = randomUUID();
 
                 await User.update({
-                    where:{
+                    where: {
                         id: user.id
                     },
-                    update:{
+                    update: {
                         verificationToken: token,
                         pendingEmail: newEmail
                     }
                 })
 
-                const emailTemplate = changeEmailTemplate({token});
+                const emailTemplate = changeEmailTemplate({ token });
                 console.log(emailTemplate.body);
                 await mail.sendEmail({
-                    to:[newEmail],
+                    to: [newEmail],
                     title: emailTemplate.title,
                     body: emailTemplate.body
                 });
             }
-            
+
 
             return { success: true }
-        }catch(e: any){
+        } catch (e: any) {
             throw e;
         }
     }
     @Mutation((returns) => SignUpSuccessOutput, { nullable: true })
     async sendResetPasswordEmail(
-        @Arg("input", { nullable: true }) args: SubmitResetPasswordInput ,
+        @Arg("input", { nullable: true }) args: SubmitResetPasswordInput,
         @Ctx() { user: currentUser, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        try{
+        try {
             const { email } = args;
 
             //Ensure password meets requirements 
             //Ensure email doesn't already exist
-    
+
             const User = ogm.model("User");
-    
+
             const user = await User.find({
                 where: {
                     email: email
                 }
             })
-    
-            if(user.length && user[0].email === email){
+
+            if (user.length && user[0].email === email) {
                 const mail = new EmailService();
                 const token = randomUUID();
-                
+
                 await User.update({
-                    where:{
+                    where: {
                         id: user[0].id
                     },
-                    update:{
+                    update: {
                         resetToken: token
                     }
                 })
 
-                const emailTemplate = passwordResetTemplate({token});
+                const emailTemplate = passwordResetTemplate({ token });
                 console.log(emailTemplate.body);
                 await mail.sendEmail({
-                    to:[email],
+                    to: [email],
                     title: emailTemplate.title,
                     body: emailTemplate.body
                 });
             }
-            
+
 
             return { success: true }
-        }catch(e: any){
+        } catch (e: any) {
             throw e;
         }
     }
@@ -222,42 +247,42 @@ export class AuthResolver {
         @Arg("input", { nullable: true }) args: VerifyEmailInput,
         @Ctx() { user: currentUser, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        try{
+        try {
             const { token } = args;
 
             //Ensure password meets requirements 
             //Ensure email doesn't already exist
-    
+
             const User = ogm.model("User");
-    
+
             const user = await User.find({
                 where: {
                     verificationToken: token
                 }
             });
-    
-            if(!user.length){
+
+            if (!user.length) {
                 throw new Error("User not found")
             }
 
-            if(user[0].accountStatus == AccountStatus.ACTIVE){
+            if (user[0].accountStatus == AccountStatus.ACTIVE) {
 
 
                 const accountVerified = token === user[0].verificationToken;
-                
-                if(!accountVerified){
+
+                if (!accountVerified) {
                     throw new EmailVerificationError({
                         message: "Verification code is invalid",
                         data: {},
-                      });
+                    });
                 }
-    
-    
+
+
                 await User.update({
-                    where:{
+                    where: {
                         verificationToken: token
                     },
-                    update:{
+                    update: {
                         email: user[0].pendingEmail,
                         verificationToken: "",
                         pendingEmail: null
@@ -267,7 +292,7 @@ export class AuthResolver {
             }
 
             return { success: true }
-        }catch(e: any){
+        } catch (e: any) {
             throw e;
         }
     }
@@ -277,44 +302,44 @@ export class AuthResolver {
         @Arg("input", { nullable: true }) args: VerifyEmailInput,
         @Ctx() { user: currentUser, ogm }: Context,
     ): Promise<SignUpSuccessOutput> {
-        try{
+        try {
             const { token } = args;
 
             //Ensure password meets requirements 
             //Ensure email doesn't already exist
-    
+
             const User = ogm.model("User");
-    
+
             const user = await User.find({
                 where: {
                     verificationToken: token
                 }
             })
-    
-            if(!user.length){
+
+            if (!user.length) {
                 throw new Error("User not found")
             }
 
-            if(user[0].accountStatus !== AccountStatus.PENDING){
+            if (user[0].accountStatus !== AccountStatus.PENDING) {
                 throw new Error("User already verified")
             }
 
             const accountVerified = token === user[0].verificationToken;
-            
-            if(!accountVerified){
+
+            if (!accountVerified) {
                 throw new EmailVerificationError({
                     message: "Verification code is invalid",
                     data: {},
-                  });
+                });
             }
 
             user[0].accountStatus = AccountStatus.ACTIVE;
 
             await User.update({
-                where:{
+                where: {
                     id: user[0].id
                 },
-                update:{
+                update: {
                     accountStatus: AccountStatus.ACTIVE,
                     verificationToken: ""
                 }
@@ -324,14 +349,14 @@ export class AuthResolver {
             const emailTemplate = registrationSuccessTemplate();
             console.log(emailTemplate.body);
             await mail.sendEmail({
-                to:[user[0].email],
+                to: [user[0].email],
                 title: emailTemplate.title,
                 body: emailTemplate.body
             });
 
 
             return { success: true }
-        }catch(e: any){
+        } catch (e: any) {
             throw e;
         }
     }
@@ -361,7 +386,7 @@ export class AuthResolver {
                 throw new EmailVerificationError({
                     message: "Email is not verified",
                     data: {},
-                  });
+                });
             }
 
             const isValid = await verifyPassword(password, user[0].password);
@@ -372,11 +397,13 @@ export class AuthResolver {
 
 
             const { id, password: pw } = user[0];
-            const allTokens = generateAllTokens({
+            const allTokens = await generateAllTokens({
                 userId: id,
                 passwordHash: pw
             })
 
+            const token = await verifyToken({ token: allTokens.accessToken, jwtType: JwtType.access });
+            console.log(token)
             return allTokens;
 
         } catch (err: any) {
@@ -398,11 +425,11 @@ export class AuthResolver {
             context
         );
         console.log(user);
-        if(!user){
+        if (!user) {
             throw new Error("User not found");
         }
 
-        const {id, email, password} = user;
+        const { id, email, password } = user;
 
 
 

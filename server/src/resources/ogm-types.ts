@@ -35,6 +35,8 @@ export type Query = {
   postsAggregate: PostAggregateSelection;
   postOutputs: Array<PostOutput>;
   postOutputsAggregate: PostOutputAggregateSelection;
+  roles: Array<Role>;
+  rolesAggregate: RoleAggregateSelection;
   signUpSuccessOutputs: Array<SignUpSuccessOutput>;
   signUpSuccessOutputsAggregate: SignUpSuccessOutputAggregateSelection;
   users: Array<User>;
@@ -74,6 +76,15 @@ export type QueryPostOutputsArgs = {
 
 export type QueryPostOutputsAggregateArgs = {
   where?: InputMaybe<PostOutputWhere>;
+};
+
+export type QueryRolesArgs = {
+  where?: InputMaybe<RoleWhere>;
+  options?: InputMaybe<RoleOptions>;
+};
+
+export type QueryRolesAggregateArgs = {
+  where?: InputMaybe<RoleWhere>;
 };
 
 export type QuerySignUpSuccessOutputsArgs = {
@@ -123,6 +134,9 @@ export type Mutation = {
   createPostOutputs: CreatePostOutputsMutationResponse;
   deletePostOutputs: DeleteInfo;
   updatePostOutputs: UpdatePostOutputsMutationResponse;
+  createRoles: CreateRolesMutationResponse;
+  deleteRoles: DeleteInfo;
+  updateRoles: UpdateRolesMutationResponse;
   createSignUpSuccessOutputs: CreateSignUpSuccessOutputsMutationResponse;
   deleteSignUpSuccessOutputs: DeleteInfo;
   updateSignUpSuccessOutputs: UpdateSignUpSuccessOutputsMutationResponse;
@@ -215,6 +229,25 @@ export type MutationUpdatePostOutputsArgs = {
   update?: InputMaybe<PostOutputUpdateInput>;
 };
 
+export type MutationCreateRolesArgs = {
+  input: Array<RoleCreateInput>;
+};
+
+export type MutationDeleteRolesArgs = {
+  where?: InputMaybe<RoleWhere>;
+  delete?: InputMaybe<RoleDeleteInput>;
+};
+
+export type MutationUpdateRolesArgs = {
+  where?: InputMaybe<RoleWhere>;
+  update?: InputMaybe<RoleUpdateInput>;
+  connect?: InputMaybe<RoleConnectInput>;
+  disconnect?: InputMaybe<RoleDisconnectInput>;
+  create?: InputMaybe<RoleRelationInput>;
+  delete?: InputMaybe<RoleDeleteInput>;
+  connectOrCreate?: InputMaybe<RoleConnectOrCreateInput>;
+};
+
 export type MutationCreateSignUpSuccessOutputsArgs = {
   input: Array<SignUpSuccessOutputCreateInput>;
 };
@@ -290,6 +323,12 @@ export type CreatePostsMutationResponse = {
   __typename?: "CreatePostsMutationResponse";
   info: CreateInfo;
   posts: Array<Post>;
+};
+
+export type CreateRolesMutationResponse = {
+  __typename?: "CreateRolesMutationResponse";
+  info: CreateInfo;
+  roles: Array<Role>;
 };
 
 export type CreateSignUpSuccessOutputsMutationResponse = {
@@ -454,12 +493,94 @@ export type PostUserCreatedByNodeAggregateSelection = {
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
+  loginRetries: FloatAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
   pendingEmail: StringAggregateSelectionNullable;
   resetToken: StringAggregateSelectionNullable;
   verificationToken: StringAggregateSelectionNonNullable;
   createdAt: DateTimeAggregateSelectionNonNullable;
   lastModifiedAt: DateTimeAggregateSelectionNonNullable;
+};
+
+export type Role = {
+  __typename?: "Role";
+  createdBy?: Maybe<Scalars["ID"]>;
+  deletedBy?: Maybe<Scalars["ID"]>;
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  modifiedBy?: Maybe<Scalars["ID"]>;
+  name: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  deletedAt?: Maybe<Scalars["DateTime"]>;
+  lastModifiedAt: Scalars["DateTime"];
+  users?: Maybe<Role>;
+  usersAggregate?: Maybe<RoleRoleUsersAggregationSelection>;
+  usersConnection: RoleUsersConnection;
+};
+
+export type RoleUsersArgs = {
+  where?: InputMaybe<RoleWhere>;
+  options?: InputMaybe<RoleOptions>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export type RoleUsersAggregateArgs = {
+  where?: InputMaybe<RoleWhere>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export type RoleUsersConnectionArgs = {
+  where?: InputMaybe<RoleUsersConnectionWhere>;
+  first?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars["String"]>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+  sort?: InputMaybe<Array<RoleUsersConnectionSort>>;
+};
+
+export type RoleAggregateSelection = {
+  __typename?: "RoleAggregateSelection";
+  count: Scalars["Int"];
+  createdBy: IdAggregateSelectionNullable;
+  deletedBy: IdAggregateSelectionNullable;
+  description: StringAggregateSelectionNullable;
+  id: IdAggregateSelectionNonNullable;
+  modifiedBy: IdAggregateSelectionNullable;
+  name: StringAggregateSelectionNonNullable;
+  createdAt: DateTimeAggregateSelectionNonNullable;
+  deletedAt: DateTimeAggregateSelectionNullable;
+  lastModifiedAt: DateTimeAggregateSelectionNonNullable;
+};
+
+export type RoleRoleUsersAggregationSelection = {
+  __typename?: "RoleRoleUsersAggregationSelection";
+  count: Scalars["Int"];
+  node?: Maybe<RoleRoleUsersNodeAggregateSelection>;
+};
+
+export type RoleRoleUsersNodeAggregateSelection = {
+  __typename?: "RoleRoleUsersNodeAggregateSelection";
+  createdBy: IdAggregateSelectionNullable;
+  deletedBy: IdAggregateSelectionNullable;
+  description: StringAggregateSelectionNullable;
+  id: IdAggregateSelectionNonNullable;
+  modifiedBy: IdAggregateSelectionNullable;
+  name: StringAggregateSelectionNonNullable;
+  createdAt: DateTimeAggregateSelectionNonNullable;
+  deletedAt: DateTimeAggregateSelectionNullable;
+  lastModifiedAt: DateTimeAggregateSelectionNonNullable;
+};
+
+export type RoleUsersConnection = {
+  __typename?: "RoleUsersConnection";
+  edges: Array<RoleUsersRelationship>;
+  totalCount: Scalars["Int"];
+  pageInfo: PageInfo;
+};
+
+export type RoleUsersRelationship = {
+  __typename?: "RoleUsersRelationship";
+  cursor: Scalars["String"];
+  node: Role;
 };
 
 export type SignUpSuccessOutput = {
@@ -511,6 +632,12 @@ export type UpdatePostsMutationResponse = {
   posts: Array<Post>;
 };
 
+export type UpdateRolesMutationResponse = {
+  __typename?: "UpdateRolesMutationResponse";
+  info: UpdateInfo;
+  roles: Array<Role>;
+};
+
 export type UpdateSignUpSuccessOutputsMutationResponse = {
   __typename?: "UpdateSignUpSuccessOutputsMutationResponse";
   info: UpdateInfo;
@@ -537,6 +664,7 @@ export type User = {
   email: Scalars["String"];
   id: Scalars["ID"];
   lastModifiedBy?: Maybe<Scalars["ID"]>;
+  loginRetries?: Maybe<Scalars["Float"]>;
   password: Scalars["String"];
   pendingEmail?: Maybe<Scalars["String"]>;
   resetToken?: Maybe<Scalars["String"]>;
@@ -547,8 +675,11 @@ export type User = {
   friendsAggregate?: Maybe<UserUserFriendsAggregationSelection>;
   posts?: Maybe<Post>;
   postsAggregate?: Maybe<UserPostPostsAggregationSelection>;
+  roles?: Maybe<Role>;
+  rolesAggregate?: Maybe<UserRoleRolesAggregationSelection>;
   friendsConnection: UserFriendsConnection;
   postsConnection: UserPostsConnection;
+  rolesConnection: UserRolesConnection;
 };
 
 export type UserFriendsArgs = {
@@ -573,6 +704,17 @@ export type UserPostsAggregateArgs = {
   directed?: InputMaybe<Scalars["Boolean"]>;
 };
 
+export type UserRolesArgs = {
+  where?: InputMaybe<RoleWhere>;
+  options?: InputMaybe<RoleOptions>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+};
+
+export type UserRolesAggregateArgs = {
+  where?: InputMaybe<RoleWhere>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+};
+
 export type UserFriendsConnectionArgs = {
   where?: InputMaybe<UserFriendsConnectionWhere>;
   first?: InputMaybe<Scalars["Int"]>;
@@ -589,6 +731,14 @@ export type UserPostsConnectionArgs = {
   sort?: InputMaybe<Array<UserPostsConnectionSort>>;
 };
 
+export type UserRolesConnectionArgs = {
+  where?: InputMaybe<UserRolesConnectionWhere>;
+  first?: InputMaybe<Scalars["Int"]>;
+  after?: InputMaybe<Scalars["String"]>;
+  directed?: InputMaybe<Scalars["Boolean"]>;
+  sort?: InputMaybe<Array<UserRolesConnectionSort>>;
+};
+
 export type UserAggregateSelection = {
   __typename?: "UserAggregateSelection";
   count: Scalars["Int"];
@@ -598,6 +748,7 @@ export type UserAggregateSelection = {
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
+  loginRetries: FloatAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
   pendingEmail: StringAggregateSelectionNullable;
   resetToken: StringAggregateSelectionNullable;
@@ -659,6 +810,38 @@ export type UserPostsRelationship = {
   node: Post;
 };
 
+export type UserRoleRolesAggregationSelection = {
+  __typename?: "UserRoleRolesAggregationSelection";
+  count: Scalars["Int"];
+  node?: Maybe<UserRoleRolesNodeAggregateSelection>;
+};
+
+export type UserRoleRolesNodeAggregateSelection = {
+  __typename?: "UserRoleRolesNodeAggregateSelection";
+  createdBy: IdAggregateSelectionNullable;
+  deletedBy: IdAggregateSelectionNullable;
+  description: StringAggregateSelectionNullable;
+  id: IdAggregateSelectionNonNullable;
+  modifiedBy: IdAggregateSelectionNullable;
+  name: StringAggregateSelectionNonNullable;
+  createdAt: DateTimeAggregateSelectionNonNullable;
+  deletedAt: DateTimeAggregateSelectionNullable;
+  lastModifiedAt: DateTimeAggregateSelectionNonNullable;
+};
+
+export type UserRolesConnection = {
+  __typename?: "UserRolesConnection";
+  edges: Array<UserRolesRelationship>;
+  totalCount: Scalars["Int"];
+  pageInfo: PageInfo;
+};
+
+export type UserRolesRelationship = {
+  __typename?: "UserRolesRelationship";
+  cursor: Scalars["String"];
+  node: Role;
+};
+
 export type UserUserFriendsAggregationSelection = {
   __typename?: "UserUserFriendsAggregationSelection";
   count: Scalars["Int"];
@@ -673,6 +856,7 @@ export type UserUserFriendsNodeAggregateSelection = {
   email: StringAggregateSelectionNonNullable;
   id: IdAggregateSelectionNonNullable;
   lastModifiedBy: IdAggregateSelectionNullable;
+  loginRetries: FloatAggregateSelectionNullable;
   password: StringAggregateSelectionNonNullable;
   pendingEmail: StringAggregateSelectionNullable;
   resetToken: StringAggregateSelectionNullable;
@@ -980,6 +1164,31 @@ export type PostCreatedByNodeAggregationWhereInput = {
   deletedBy_MIN_LTE?: InputMaybe<Scalars["Float"]>;
   deletedBy_MAX_LTE?: InputMaybe<Scalars["Float"]>;
   deletedBy_SUM_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_LTE?: InputMaybe<Scalars["Float"]>;
   createdAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
   createdAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
   createdAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
@@ -1202,6 +1411,345 @@ export type ResetPasswordInput = {
   token: Scalars["String"];
 };
 
+export type RoleConnectInput = {
+  users?: InputMaybe<RoleUsersConnectFieldInput>;
+};
+
+export type RoleConnectOrCreateInput = {
+  users?: InputMaybe<RoleUsersConnectOrCreateFieldInput>;
+};
+
+export type RoleConnectOrCreateWhere = {
+  node: RoleUniqueWhere;
+};
+
+export type RoleConnectWhere = {
+  node: RoleWhere;
+};
+
+export type RoleCreateInput = {
+  createdBy?: InputMaybe<Scalars["ID"]>;
+  deletedBy?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  modifiedBy?: InputMaybe<Scalars["ID"]>;
+  name: Scalars["String"];
+  deletedAt?: InputMaybe<Scalars["DateTime"]>;
+  users?: InputMaybe<RoleUsersFieldInput>;
+};
+
+export type RoleDeleteInput = {
+  users?: InputMaybe<RoleUsersDeleteFieldInput>;
+};
+
+export type RoleDisconnectInput = {
+  users?: InputMaybe<RoleUsersDisconnectFieldInput>;
+};
+
+export type RoleOnCreateInput = {
+  createdBy?: InputMaybe<Scalars["ID"]>;
+  deletedBy?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  modifiedBy?: InputMaybe<Scalars["ID"]>;
+  name: Scalars["String"];
+};
+
+export type RoleOptions = {
+  /** Specify one or more RoleSort objects to sort Roles by. The sorts will be applied in the order in which they are arranged in the array. */
+  sort?: InputMaybe<Array<RoleSort>>;
+  limit?: InputMaybe<Scalars["Int"]>;
+  offset?: InputMaybe<Scalars["Int"]>;
+};
+
+export type RoleRelationInput = {
+  users?: InputMaybe<RoleUsersCreateFieldInput>;
+};
+
+/** Fields to sort Roles by. The order in which sorts are applied is not guaranteed when specifying many fields in one RoleSort object. */
+export type RoleSort = {
+  createdBy?: InputMaybe<SortDirection>;
+  deletedBy?: InputMaybe<SortDirection>;
+  description?: InputMaybe<SortDirection>;
+  id?: InputMaybe<SortDirection>;
+  modifiedBy?: InputMaybe<SortDirection>;
+  name?: InputMaybe<SortDirection>;
+  createdAt?: InputMaybe<SortDirection>;
+  deletedAt?: InputMaybe<SortDirection>;
+  lastModifiedAt?: InputMaybe<SortDirection>;
+};
+
+export type RoleUniqueWhere = {
+  id?: InputMaybe<Scalars["ID"]>;
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type RoleUpdateInput = {
+  createdBy?: InputMaybe<Scalars["ID"]>;
+  deletedBy?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  modifiedBy?: InputMaybe<Scalars["ID"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  deletedAt?: InputMaybe<Scalars["DateTime"]>;
+  users?: InputMaybe<RoleUsersUpdateFieldInput>;
+};
+
+export type RoleUsersAggregateInput = {
+  count?: InputMaybe<Scalars["Int"]>;
+  count_LT?: InputMaybe<Scalars["Int"]>;
+  count_LTE?: InputMaybe<Scalars["Int"]>;
+  count_GT?: InputMaybe<Scalars["Int"]>;
+  count_GTE?: InputMaybe<Scalars["Int"]>;
+  AND?: InputMaybe<Array<RoleUsersAggregateInput>>;
+  OR?: InputMaybe<Array<RoleUsersAggregateInput>>;
+  node?: InputMaybe<RoleUsersNodeAggregationWhereInput>;
+};
+
+export type RoleUsersConnectFieldInput = {
+  where?: InputMaybe<RoleConnectWhere>;
+  connect?: InputMaybe<RoleConnectInput>;
+};
+
+export type RoleUsersConnectionSort = {
+  node?: InputMaybe<RoleSort>;
+};
+
+export type RoleUsersConnectionWhere = {
+  AND?: InputMaybe<Array<RoleUsersConnectionWhere>>;
+  OR?: InputMaybe<Array<RoleUsersConnectionWhere>>;
+  node?: InputMaybe<RoleWhere>;
+  node_NOT?: InputMaybe<RoleWhere>;
+};
+
+export type RoleUsersConnectOrCreateFieldInput = {
+  where: RoleConnectOrCreateWhere;
+  onCreate: RoleUsersConnectOrCreateFieldInputOnCreate;
+};
+
+export type RoleUsersConnectOrCreateFieldInputOnCreate = {
+  node: RoleOnCreateInput;
+};
+
+export type RoleUsersCreateFieldInput = {
+  node: RoleCreateInput;
+};
+
+export type RoleUsersDeleteFieldInput = {
+  where?: InputMaybe<RoleUsersConnectionWhere>;
+  delete?: InputMaybe<RoleDeleteInput>;
+};
+
+export type RoleUsersDisconnectFieldInput = {
+  where?: InputMaybe<RoleUsersConnectionWhere>;
+  disconnect?: InputMaybe<RoleDisconnectInput>;
+};
+
+export type RoleUsersFieldInput = {
+  create?: InputMaybe<RoleUsersCreateFieldInput>;
+  connect?: InputMaybe<RoleUsersConnectFieldInput>;
+  connectOrCreate?: InputMaybe<RoleUsersConnectOrCreateFieldInput>;
+};
+
+export type RoleUsersNodeAggregationWhereInput = {
+  AND?: InputMaybe<Array<RoleUsersNodeAggregationWhereInput>>;
+  OR?: InputMaybe<Array<RoleUsersNodeAggregationWhereInput>>;
+  createdBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  deletedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  id_EQUAL?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  description_EQUAL?: InputMaybe<Scalars["String"]>;
+  description_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  description_GT?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  description_GTE?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  description_LT?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  description_LTE?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  name_EQUAL?: InputMaybe<Scalars["String"]>;
+  name_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  name_GT?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  name_GTE?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  name_LT?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  name_LTE?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  createdAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type RoleUsersUpdateConnectionInput = {
+  node?: InputMaybe<RoleUpdateInput>;
+};
+
+export type RoleUsersUpdateFieldInput = {
+  where?: InputMaybe<RoleUsersConnectionWhere>;
+  update?: InputMaybe<RoleUsersUpdateConnectionInput>;
+  connect?: InputMaybe<RoleUsersConnectFieldInput>;
+  disconnect?: InputMaybe<RoleUsersDisconnectFieldInput>;
+  create?: InputMaybe<RoleUsersCreateFieldInput>;
+  delete?: InputMaybe<RoleUsersDeleteFieldInput>;
+  connectOrCreate?: InputMaybe<RoleUsersConnectOrCreateFieldInput>;
+};
+
+export type RoleWhere = {
+  OR?: InputMaybe<Array<RoleWhere>>;
+  AND?: InputMaybe<Array<RoleWhere>>;
+  createdBy?: InputMaybe<Scalars["ID"]>;
+  createdBy_NOT?: InputMaybe<Scalars["ID"]>;
+  createdBy_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  createdBy_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  createdBy_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  createdBy_NOT_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  createdBy_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  createdBy_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  createdBy_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  createdBy_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  deletedBy?: InputMaybe<Scalars["ID"]>;
+  deletedBy_NOT?: InputMaybe<Scalars["ID"]>;
+  deletedBy_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  deletedBy_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  deletedBy_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  deletedBy_NOT_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  deletedBy_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  deletedBy_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  deletedBy_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  deletedBy_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  description?: InputMaybe<Scalars["String"]>;
+  description_NOT?: InputMaybe<Scalars["String"]>;
+  description_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  description_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+  description_CONTAINS?: InputMaybe<Scalars["String"]>;
+  description_NOT_CONTAINS?: InputMaybe<Scalars["String"]>;
+  description_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  description_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  description_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  description_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  id?: InputMaybe<Scalars["ID"]>;
+  id_NOT?: InputMaybe<Scalars["ID"]>;
+  id_IN?: InputMaybe<Array<Scalars["ID"]>>;
+  id_NOT_IN?: InputMaybe<Array<Scalars["ID"]>>;
+  id_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  id_NOT_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  id_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  id_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  id_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  id_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  modifiedBy?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_NOT?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  modifiedBy_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  modifiedBy_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_NOT_CONTAINS?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  name?: InputMaybe<Scalars["String"]>;
+  name_NOT?: InputMaybe<Scalars["String"]>;
+  name_IN?: InputMaybe<Array<Scalars["String"]>>;
+  name_NOT_IN?: InputMaybe<Array<Scalars["String"]>>;
+  name_CONTAINS?: InputMaybe<Scalars["String"]>;
+  name_NOT_CONTAINS?: InputMaybe<Scalars["String"]>;
+  name_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  name_NOT_STARTS_WITH?: InputMaybe<Scalars["String"]>;
+  name_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  name_NOT_ENDS_WITH?: InputMaybe<Scalars["String"]>;
+  createdAt?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_NOT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_IN?: InputMaybe<Array<Scalars["DateTime"]>>;
+  createdAt_NOT_IN?: InputMaybe<Array<Scalars["DateTime"]>>;
+  createdAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_NOT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_IN?: InputMaybe<Array<InputMaybe<Scalars["DateTime"]>>>;
+  deletedAt_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["DateTime"]>>>;
+  deletedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_NOT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_IN?: InputMaybe<Array<Scalars["DateTime"]>>;
+  lastModifiedAt_NOT_IN?: InputMaybe<Array<Scalars["DateTime"]>>;
+  lastModifiedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  users?: InputMaybe<RoleWhere>;
+  users_NOT?: InputMaybe<RoleWhere>;
+  usersAggregate?: InputMaybe<RoleUsersAggregateInput>;
+  usersConnection?: InputMaybe<RoleUsersConnectionWhere>;
+  usersConnection_NOT?: InputMaybe<RoleUsersConnectionWhere>;
+};
+
 export type SignupInput = {
   email: Scalars["String"];
   password: Scalars["String"];
@@ -1241,11 +1789,13 @@ export type SubmitResetPasswordInput = {
 export type UserConnectInput = {
   friends?: InputMaybe<UserFriendsConnectFieldInput>;
   posts?: InputMaybe<UserPostsConnectFieldInput>;
+  roles?: InputMaybe<UserRolesConnectFieldInput>;
 };
 
 export type UserConnectOrCreateInput = {
   friends?: InputMaybe<UserFriendsConnectOrCreateFieldInput>;
   posts?: InputMaybe<UserPostsConnectOrCreateFieldInput>;
+  roles?: InputMaybe<UserRolesConnectOrCreateFieldInput>;
 };
 
 export type UserConnectOrCreateWhere = {
@@ -1262,22 +1812,26 @@ export type UserCreateInput = {
   deletedBy?: InputMaybe<Scalars["Float"]>;
   email: Scalars["String"];
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
+  loginRetries?: InputMaybe<Scalars["Float"]>;
   password: Scalars["String"];
   pendingEmail?: InputMaybe<Scalars["String"]>;
   resetToken?: InputMaybe<Scalars["String"]>;
   verificationToken: Scalars["String"];
   friends?: InputMaybe<UserFriendsFieldInput>;
   posts?: InputMaybe<UserPostsFieldInput>;
+  roles?: InputMaybe<UserRolesFieldInput>;
 };
 
 export type UserDeleteInput = {
   friends?: InputMaybe<UserFriendsDeleteFieldInput>;
   posts?: InputMaybe<UserPostsDeleteFieldInput>;
+  roles?: InputMaybe<UserRolesDeleteFieldInput>;
 };
 
 export type UserDisconnectInput = {
   friends?: InputMaybe<UserFriendsDisconnectFieldInput>;
   posts?: InputMaybe<UserPostsDisconnectFieldInput>;
+  roles?: InputMaybe<UserRolesDisconnectFieldInput>;
 };
 
 export type UserFriendsAggregateInput = {
@@ -1492,6 +2046,31 @@ export type UserFriendsNodeAggregationWhereInput = {
   deletedBy_MIN_LTE?: InputMaybe<Scalars["Float"]>;
   deletedBy_MAX_LTE?: InputMaybe<Scalars["Float"]>;
   deletedBy_SUM_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_EQUAL?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_GTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MIN_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_MAX_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_SUM_LTE?: InputMaybe<Scalars["Float"]>;
   createdAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
   createdAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
   createdAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
@@ -1548,6 +2127,7 @@ export type UserOnCreateInput = {
   deletedBy?: InputMaybe<Scalars["Float"]>;
   email: Scalars["String"];
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
+  loginRetries?: InputMaybe<Scalars["Float"]>;
   password: Scalars["String"];
   pendingEmail?: InputMaybe<Scalars["String"]>;
   resetToken?: InputMaybe<Scalars["String"]>;
@@ -1741,6 +2321,171 @@ export type UserPostsUpdateFieldInput = {
 export type UserRelationInput = {
   friends?: InputMaybe<UserFriendsCreateFieldInput>;
   posts?: InputMaybe<UserPostsCreateFieldInput>;
+  roles?: InputMaybe<UserRolesCreateFieldInput>;
+};
+
+export type UserRolesAggregateInput = {
+  count?: InputMaybe<Scalars["Int"]>;
+  count_LT?: InputMaybe<Scalars["Int"]>;
+  count_LTE?: InputMaybe<Scalars["Int"]>;
+  count_GT?: InputMaybe<Scalars["Int"]>;
+  count_GTE?: InputMaybe<Scalars["Int"]>;
+  AND?: InputMaybe<Array<UserRolesAggregateInput>>;
+  OR?: InputMaybe<Array<UserRolesAggregateInput>>;
+  node?: InputMaybe<UserRolesNodeAggregationWhereInput>;
+};
+
+export type UserRolesConnectFieldInput = {
+  where?: InputMaybe<RoleConnectWhere>;
+  connect?: InputMaybe<RoleConnectInput>;
+};
+
+export type UserRolesConnectionSort = {
+  node?: InputMaybe<RoleSort>;
+};
+
+export type UserRolesConnectionWhere = {
+  AND?: InputMaybe<Array<UserRolesConnectionWhere>>;
+  OR?: InputMaybe<Array<UserRolesConnectionWhere>>;
+  node?: InputMaybe<RoleWhere>;
+  node_NOT?: InputMaybe<RoleWhere>;
+};
+
+export type UserRolesConnectOrCreateFieldInput = {
+  where: RoleConnectOrCreateWhere;
+  onCreate: UserRolesConnectOrCreateFieldInputOnCreate;
+};
+
+export type UserRolesConnectOrCreateFieldInputOnCreate = {
+  node: RoleOnCreateInput;
+};
+
+export type UserRolesCreateFieldInput = {
+  node: RoleCreateInput;
+};
+
+export type UserRolesDeleteFieldInput = {
+  where?: InputMaybe<UserRolesConnectionWhere>;
+  delete?: InputMaybe<RoleDeleteInput>;
+};
+
+export type UserRolesDisconnectFieldInput = {
+  where?: InputMaybe<UserRolesConnectionWhere>;
+  disconnect?: InputMaybe<RoleDisconnectInput>;
+};
+
+export type UserRolesFieldInput = {
+  create?: InputMaybe<UserRolesCreateFieldInput>;
+  connect?: InputMaybe<UserRolesConnectFieldInput>;
+  connectOrCreate?: InputMaybe<UserRolesConnectOrCreateFieldInput>;
+};
+
+export type UserRolesNodeAggregationWhereInput = {
+  AND?: InputMaybe<Array<UserRolesNodeAggregationWhereInput>>;
+  OR?: InputMaybe<Array<UserRolesNodeAggregationWhereInput>>;
+  createdBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  deletedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  id_EQUAL?: InputMaybe<Scalars["ID"]>;
+  modifiedBy_EQUAL?: InputMaybe<Scalars["ID"]>;
+  description_EQUAL?: InputMaybe<Scalars["String"]>;
+  description_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  description_GT?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  description_GTE?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  description_LT?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  description_LTE?: InputMaybe<Scalars["Int"]>;
+  description_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  description_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  description_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  name_EQUAL?: InputMaybe<Scalars["String"]>;
+  name_AVERAGE_EQUAL?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_EQUAL?: InputMaybe<Scalars["Int"]>;
+  name_GT?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_GT?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_GT?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_GT?: InputMaybe<Scalars["Int"]>;
+  name_GTE?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_GTE?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_GTE?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_GTE?: InputMaybe<Scalars["Int"]>;
+  name_LT?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_LT?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_LT?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_LT?: InputMaybe<Scalars["Int"]>;
+  name_LTE?: InputMaybe<Scalars["Int"]>;
+  name_AVERAGE_LTE?: InputMaybe<Scalars["Float"]>;
+  name_LONGEST_LTE?: InputMaybe<Scalars["Int"]>;
+  name_SHORTEST_LTE?: InputMaybe<Scalars["Int"]>;
+  createdAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  createdAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  deletedAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_EQUAL?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_GT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_GTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_LT?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MIN_LTE?: InputMaybe<Scalars["DateTime"]>;
+  lastModifiedAt_MAX_LTE?: InputMaybe<Scalars["DateTime"]>;
+};
+
+export type UserRolesUpdateConnectionInput = {
+  node?: InputMaybe<RoleUpdateInput>;
+};
+
+export type UserRolesUpdateFieldInput = {
+  where?: InputMaybe<UserRolesConnectionWhere>;
+  update?: InputMaybe<UserRolesUpdateConnectionInput>;
+  connect?: InputMaybe<UserRolesConnectFieldInput>;
+  disconnect?: InputMaybe<UserRolesDisconnectFieldInput>;
+  create?: InputMaybe<UserRolesCreateFieldInput>;
+  delete?: InputMaybe<UserRolesDeleteFieldInput>;
+  connectOrCreate?: InputMaybe<UserRolesConnectOrCreateFieldInput>;
 };
 
 /** Fields to sort Users by. The order in which sorts are applied is not guaranteed when specifying many fields in one UserSort object. */
@@ -1751,6 +2496,7 @@ export type UserSort = {
   email?: InputMaybe<SortDirection>;
   id?: InputMaybe<SortDirection>;
   lastModifiedBy?: InputMaybe<SortDirection>;
+  loginRetries?: InputMaybe<SortDirection>;
   password?: InputMaybe<SortDirection>;
   pendingEmail?: InputMaybe<SortDirection>;
   resetToken?: InputMaybe<SortDirection>;
@@ -1770,12 +2516,14 @@ export type UserUpdateInput = {
   deletedBy?: InputMaybe<Scalars["Float"]>;
   email?: InputMaybe<Scalars["String"]>;
   lastModifiedBy?: InputMaybe<Scalars["ID"]>;
+  loginRetries?: InputMaybe<Scalars["Float"]>;
   password?: InputMaybe<Scalars["String"]>;
   pendingEmail?: InputMaybe<Scalars["String"]>;
   resetToken?: InputMaybe<Scalars["String"]>;
   verificationToken?: InputMaybe<Scalars["String"]>;
   friends?: InputMaybe<UserFriendsUpdateFieldInput>;
   posts?: InputMaybe<UserPostsUpdateFieldInput>;
+  roles?: InputMaybe<UserRolesUpdateFieldInput>;
 };
 
 export type UserWhere = {
@@ -1837,6 +2585,14 @@ export type UserWhere = {
   lastModifiedBy_NOT_STARTS_WITH?: InputMaybe<Scalars["ID"]>;
   lastModifiedBy_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
   lastModifiedBy_NOT_ENDS_WITH?: InputMaybe<Scalars["ID"]>;
+  loginRetries?: InputMaybe<Scalars["Float"]>;
+  loginRetries_NOT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_IN?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
+  loginRetries_NOT_IN?: InputMaybe<Array<InputMaybe<Scalars["Float"]>>>;
+  loginRetries_LT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_LTE?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GT?: InputMaybe<Scalars["Float"]>;
+  loginRetries_GTE?: InputMaybe<Scalars["Float"]>;
   password?: InputMaybe<Scalars["String"]>;
   password_NOT?: InputMaybe<Scalars["String"]>;
   password_IN?: InputMaybe<Array<Scalars["String"]>>;
@@ -1899,10 +2655,15 @@ export type UserWhere = {
   posts?: InputMaybe<PostWhere>;
   posts_NOT?: InputMaybe<PostWhere>;
   postsAggregate?: InputMaybe<UserPostsAggregateInput>;
+  roles?: InputMaybe<RoleWhere>;
+  roles_NOT?: InputMaybe<RoleWhere>;
+  rolesAggregate?: InputMaybe<UserRolesAggregateInput>;
   friendsConnection?: InputMaybe<UserFriendsConnectionWhere>;
   friendsConnection_NOT?: InputMaybe<UserFriendsConnectionWhere>;
   postsConnection?: InputMaybe<UserPostsConnectionWhere>;
   postsConnection_NOT?: InputMaybe<UserPostsConnectionWhere>;
+  rolesConnection?: InputMaybe<UserRolesConnectionWhere>;
+  rolesConnection_NOT?: InputMaybe<UserRolesConnectionWhere>;
 };
 
 export type VerifyEmailInput = {
@@ -2137,6 +2898,87 @@ export interface DateTimeAggregateInputNullable {
   min?: boolean;
   max?: boolean;
 }
+export interface RoleAggregateSelectionInput {
+  count?: boolean;
+  createdBy?: IdAggregateInputNullable;
+  deletedBy?: IdAggregateInputNullable;
+  description?: StringAggregateInputNullable;
+  id?: IdAggregateInputNonNullable;
+  modifiedBy?: IdAggregateInputNullable;
+  name?: StringAggregateInputNonNullable;
+  createdAt?: DateTimeAggregateInputNonNullable;
+  deletedAt?: DateTimeAggregateInputNullable;
+  lastModifiedAt?: DateTimeAggregateInputNonNullable;
+}
+
+export declare class RoleModel {
+  public find(args?: {
+    where?: RoleWhere;
+
+    options?: RoleOptions;
+    selectionSet?: string | DocumentNode | SelectionSetNode;
+    args?: any;
+    context?: any;
+    rootValue?: any;
+  }): Promise<Role[]>;
+  public create(args: {
+    input: RoleCreateInput[];
+    selectionSet?: string | DocumentNode | SelectionSetNode;
+    args?: any;
+    context?: any;
+    rootValue?: any;
+  }): Promise<CreateRolesMutationResponse>;
+  public update(args: {
+    where?: RoleWhere;
+    update?: RoleUpdateInput;
+    connect?: RoleConnectInput;
+    disconnect?: RoleDisconnectInput;
+    create?: RoleCreateInput;
+    connectOrCreate?: RoleConnectOrCreateInput;
+    selectionSet?: string | DocumentNode | SelectionSetNode;
+    args?: any;
+    context?: any;
+    rootValue?: any;
+  }): Promise<UpdateRolesMutationResponse>;
+  public delete(args: {
+    where?: RoleWhere;
+    delete?: RoleDeleteInput;
+    context?: any;
+    rootValue: any;
+  }): Promise<{ nodesDeleted: number; relationshipsDeleted: number }>;
+  public aggregate(args: {
+    where?: RoleWhere;
+
+    aggregate: RoleAggregateSelectionInput;
+    context?: any;
+    rootValue?: any;
+  }): Promise<RoleAggregateSelection>;
+}
+
+export interface StringAggregateInputNullable {
+  shortest?: boolean;
+  longest?: boolean;
+}
+export interface StringAggregateInputNonNullable {
+  shortest?: boolean;
+  longest?: boolean;
+}
+export interface IdAggregateInputNullable {
+  shortest?: boolean;
+  longest?: boolean;
+}
+export interface IdAggregateInputNonNullable {
+  shortest?: boolean;
+  longest?: boolean;
+}
+export interface DateTimeAggregateInputNonNullable {
+  min?: boolean;
+  max?: boolean;
+}
+export interface DateTimeAggregateInputNullable {
+  min?: boolean;
+  max?: boolean;
+}
 export interface SignUpSuccessOutputAggregateSelectionInput {
   count?: boolean;
 }
@@ -2220,6 +3062,7 @@ export interface UserAggregateSelectionInput {
   email?: StringAggregateInputNonNullable;
   id?: IdAggregateInputNonNullable;
   lastModifiedBy?: IdAggregateInputNullable;
+  loginRetries?: FloatAggregateInputNullable;
   password?: StringAggregateInputNonNullable;
   pendingEmail?: StringAggregateInputNullable;
   resetToken?: StringAggregateInputNullable;
@@ -2352,6 +3195,7 @@ export interface ModelMap {
   LoginSuccessOutput: LoginSuccessOutputModel;
   Post: PostModel;
   PostOutput: PostOutputModel;
+  Role: RoleModel;
   SignUpSuccessOutput: SignUpSuccessOutputModel;
   User: UserModel;
   UserOutput: UserOutputModel;

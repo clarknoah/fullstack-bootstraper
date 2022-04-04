@@ -37,6 +37,7 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 - [ ] Serve compressed client files 
 - [ ] Functional Logging tools (Output log to file, and activity logging)
 - [ ] Centralized Password Reset Policy
+- [ ] Document Uploading and Access (with Role based enforcement of access)
 
 
 ### Client-Side Functionality
@@ -63,6 +64,8 @@ Full-stack bootstrapper which is intended to include robust scaffolding for a fu
 - [ ] ESLint
 - [ ] Jest
 - [ ] Cypress
+- [ ] TIMEZONE MANAGEMENT!!!!!!!!
+
 
 
 

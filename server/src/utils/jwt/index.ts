@@ -141,11 +141,11 @@ export const generateRefreshToken = async ({
     await checkRefreshTokenValidity({ payload });
   
     const accessToken = generateAuthToken({
-      payload: { userId: payload?.userId },
+      payload: payload,
       jwtType: JwtType.access,
     });
     const authRefreshToken = generateAuthToken({
-      payload: { userId: payload?.userId },
+      payload: payload,
       jwtType: JwtType.refresh,
     });
   

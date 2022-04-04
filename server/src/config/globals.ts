@@ -34,6 +34,7 @@ export type EnvVars = {
     FROM_EMAIL: string;
     APP_NAME: string;
     FRONTEND_URL: string;
+    GRAPHQL_API: string;
 }
 
 export const env:EnvVars = {
@@ -64,5 +65,6 @@ export const env:EnvVars = {
     SEND_EMAIL: Boolean(process.env.SEND_EMAIL) || false,
     APP_NAME: process.env.APP_NAME || "",
     FROM_EMAIL: process.env.FROM_EMAIL || "no-reply@intelligent-learning.tech",
-    FRONTEND_URL: (process.env.FRONTEND_URL!+":"+process.env.PORT) || ""
+    FRONTEND_URL: (process.env.FRONTEND_URL!+":"+process.env.PORT) || "",
+    GRAPHQL_API: process.env.FRONTEND_URL!+":"+process.env.PORT+"/graphql"
 }

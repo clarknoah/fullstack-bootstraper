@@ -23,6 +23,7 @@
   },
   "workspaces": [
     "client",
-    "server"
+    "server",
+    "common"
   ]
 }

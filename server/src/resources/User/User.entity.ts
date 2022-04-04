@@ -1,5 +1,6 @@
-import { Field, ID, ObjectType, registerEnumType, Directive, GraphQLTimestamp } from "type-graphql";
+import { Field, ID, ObjectType, Directive, Float } from "type-graphql";
 import {Post} from "resources/Post/Post.entity";
+import { Role } from "resources/Role/Role.entity";
 import { v4 as uuidv4 } from 'uuid';
 
 export enum AccountStatus {
@@ -30,6 +31,10 @@ export class User {
     @Directive('@private')
     @Field(type=>String)
     verificationToken!: string;
+
+    @Directive('@private')
+    @Field(type=>Float, {nullable:true})
+    loginRetries?: number;
 
     @Directive('@private')
     @Field(type=>String, {nullable:true})
@@ -67,6 +72,10 @@ export class User {
     @Directive(`@relationship(type: "FRIENDS_WITH", direction: OUT)`)
     @Field(type=> User, {nullable: true})
     friends?: User[]
+
+    @Directive(`@relationship(type: "HAS_ROLE", direction: OUT)`)
+    @Field(type=> Role, {nullable: true})
+    roles?: Role[]
 
 
 
